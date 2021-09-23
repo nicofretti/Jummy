@@ -1,18 +1,21 @@
 <template>
   <div class="page">
-    <Login />
+    <Home :selected="selected"/>
   </div>
 
 </template>
 
 <script>
-import Login from './components/Login.vue'
+import Home from './components/pages/Home.vue'
 
 export default {
   name: 'App',
   components: {
-    Login
-  }
+    Home
+  },
+  data:()=>{
+    return {selected:""}
+}
 }
 </script>
 
@@ -31,9 +34,5 @@ body{
   margin: 20px 40px 0;
   display: flex;
   flex-direction: column;
-}
-#app {
-  font-family: Quicksand-Bold, sans-serif;
-  margin-top: 60px;
 }
 </style>
