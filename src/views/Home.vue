@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Navbar from "../utils/Navbar";
+import Navbar from "../components/Navbar";
 
 export default {
   name: 'Home',
@@ -21,7 +21,6 @@ export default {
   methods: {
     changeNavbar(value) {
       this.selected = value;
-      console.log(this.selected)
     }
   }
 }

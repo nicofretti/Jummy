@@ -1,21 +1,11 @@
 <template>
-  <div class="page">
-    <Home :selected="selected"/>
-  </div>
-
+  <router-view />
 </template>
 
 <script>
-import Home from './components/pages/Home.vue'
 
 export default {
   name: 'App',
-  components: {
-    Home
-  },
-  data:()=>{
-    return {selected:""}
-}
 }
 </script>
 
@@ -31,8 +21,10 @@ export default {
 }
 body{
   background: $BACKGROUND;
+  color:$TEXT;
   margin: 20px 40px 0;
   display: flex;
   flex-direction: column;
+  font-family: Quicksand-Bold,sans-serif;
 }
 </style>
