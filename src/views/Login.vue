@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <p class="title">Jumm</p>
-    <LabelInput label="Username" type="text" :value="username"/>
-    <LabelInput label="Password" type="password" :value="password" style="margin-top:20px"/>
+    <LabelInput v-model="email" label="Email" type="text"/>
+    <LabelInput v-model="password" label="Password" type="password" style="margin-top:20px"/>
     <div class="buttons">
-      <button style="margin-top:40px" class="primary">Entra</button>
+      <button style="margin-top:40px" class="primary" @click="this.login">Entra</button>
       <button style="margin-top:20px" class="secondary" @click="this.$router.push('register')">Registrati</button>
     </div>
   </div>
@@ -12,19 +12,30 @@
 
 <script>
 import LabelInput from "../components/LabelInput"
+import {getAuth,signInWithEmailAndPassword} from "firebase/auth";
 
 export default {
   name: 'Login',
   data: () => {
     return {
-      username: "",
-      password: ""
+      email: "nico.fretti@gmail.com",
+      password: "asdasd"
     }
   },
   components: {
     LabelInput
   },
-  methods: {}
+  methods: {
+    login() {
+      signInWithEmailAndPassword(getAuth(), this.email, this.password)
+          .then(() => {
+            this.$router.push("/");
+          })
+          .catch((errors) => {
+            alert(errors)
+          })
+    }
+  }
 }
 </script>
 

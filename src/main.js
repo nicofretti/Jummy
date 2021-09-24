@@ -2,6 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from "./router"
 import firebase from "firebase/compat/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAELj8EWL86q6YPPGyC-z5NYm99QhIYOmU",
@@ -13,6 +14,15 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+firebase.getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(getAuth(),user => {
+            unsubscribe();
+            resolve(user);
+        }, reject);
+    })
+};
 createApp(App).use(router).mount('#app')
 
 

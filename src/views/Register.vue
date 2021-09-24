@@ -55,10 +55,11 @@ export default {
       }).catch((error)=>{
         alert(error.message);
       });
-      
+
     }
   }
 }
+//TODO checks and popup
 </script>
 
 <style scoped lang="scss">

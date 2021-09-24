@@ -2,7 +2,6 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from "./../views/Home"
 import Login from "./../views/Login"
 import Register from "./../views/Register"
-import { getAuth } from "firebase/auth";
 
 
 const routes = [
@@ -32,26 +31,28 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
-
-router.beforeEach((to, from, next) => {
-
-    next();
+import firebase from "firebase/compat/app";
+router.beforeEach(async (to, from, next) => {
     const publics = ['/login', '/register'].includes(to.path);
-    const logged = getAuth().currentUser;
-    console.log(getAuth().currentUser)
+    const logged = await firebase.getCurrentUser();
+    console.log(logged);
     if (logged) {
         if(publics){
             //publics pages aren't useful for logged users
             next("/");
+            return;
         }
         next();
+        return;
     }
     else if (publics) {
         //anonymous user is checking public pages
         next();
+        return;
     } else {
         //anonymous user is looking for 'secret' pages
         next("/login");
+        return;
     }
 });
 

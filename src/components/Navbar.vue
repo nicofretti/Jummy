@@ -6,7 +6,7 @@
                 @click="$emit('change','cart')"
                 w="50" h="50"/>
       <LogOutIcon :class="[selected==='logout' ?'selected' : '']"
-                  @click="$emit('change','logout')"
+                  @click="logout"
                   w="50" h="50"/>
     </div>
   </div>
@@ -15,7 +15,7 @@
 <script>
 import CartIcon from 'vue-ionicons/dist/md-cart';
 import LogOutIcon from 'vue-ionicons/dist/md-log-out';
-
+import { getAuth, signOut } from "firebase/auth";
 export default {
   name: "Navbar",
   props: ["selected"],
@@ -24,6 +24,18 @@ export default {
     CartIcon,
     LogOutIcon
   },
+  methods: {
+    logout() {
+      //Todo confirm exit
+      signOut(getAuth())
+          .then(() => {
+            this.$router.push("/login");
+          })
+          .catch((error) => {
+            alert(error);
+          })
+    }
+  }
 }
 </script>
 
