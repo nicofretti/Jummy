@@ -2,11 +2,9 @@
   <div class="navbar">
     <p class="title">Jumm</p>
     <div class="buttons">
-      <CartIcon :class="[selected==='cart' ?'selected' : '']"
-                @click="$emit('change','cart')"
+      <CartIcon @click="cart"
                 w="50" h="50"/>
-      <LogOutIcon :class="[selected==='logout' ?'selected' : '']"
-                  @click="logout"
+      <LogOutIcon @click="logout()"
                   w="50" h="50"/>
     </div>
   </div>
@@ -15,11 +13,13 @@
 <script>
 import CartIcon from 'vue-ionicons/dist/md-cart';
 import LogOutIcon from 'vue-ionicons/dist/md-log-out';
-import { getAuth, signOut } from "firebase/auth";
+import {getAuth, signOut} from "firebase/auth";
+
 export default {
   name: "Navbar",
-  props: ["selected"],
-  emit: ["change"],
+  props: [
+      "active" //false to activate warning
+  ],
   components: {
     CartIcon,
     LogOutIcon
@@ -27,6 +27,7 @@ export default {
   methods: {
     logout() {
       //Todo confirm exit
+      if(confirm("Confermare di voler uscire?"))
       signOut(getAuth())
           .then(() => {
             this.$router.push("/login");
@@ -34,6 +35,12 @@ export default {
           .catch((error) => {
             alert(error);
           })
+    },
+    cart() {
+      if(!this.active && confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")){
+        this.$router.push("/add_reciple");
+      }
+
     }
   }
 }

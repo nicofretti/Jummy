@@ -1,7 +1,7 @@
 <template>
   <div class="field">
-    <p class="label" v-if="label">{{ label }}</p>
-    <input class="value" :value="modelValue" :type="type"
+    <p v-if="label">{{ label }}</p>
+    <input :style="styleInput" :value="modelValue" :type="type"
       @input="$emit('update:modelValue',$event.target.value)"/>
   </div>
 </template>
@@ -10,11 +10,11 @@
 
 export default {
   name: "LabelInput",
-  props: ["modelValue","label", "type"],
+  props: ["modelValue","label", "type","styleInput"],
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "src/global";
 
 div.field {

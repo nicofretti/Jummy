@@ -1,72 +1,100 @@
 <template>
   <div>
-    <Navbar :selected="selected" @change="changeNavbar"/>
+    <Navbar :active="true" @change="changeNavbar"/>
+    <div class="bar">
+      <div class="search">
+        <input v-model="search" placeholder="Ricerca ricetta..." type="text"/>
+        <button class="primary" style="margin:0">
+          <Search style="fill:white;" h="55" w="55"/>
+        </button>
+      </div>
+      <button class="primary"
+              @click="newReciple"
+              style="margin-left:20px">
+        <AddCircleOutline style="fill:white" w="30" h="30"/>
+        Nuova ricetta
+      </button>
+      {{searchReciples}}
+    </div>
+
   </div>
 </template>
 
 <script>
 import Navbar from "../components/Navbar";
-
+import AddCircleOutline from 'vue-ionicons/dist/md-add-circle-outline';
+import Search from 'vue-ionicons/dist/md-search';
 export default {
   name: 'Home',
   props: [],
   components: {
-    Navbar
+    Navbar,
+    AddCircleOutline,
+    Search
   },
   data: () => {
     return {
+      search:"",
       selected: ""
     }
   },
   methods: {
-    changeNavbar(value) {
-      this.selected = value;
+    newReciple(){
+      this.$router.push("/add_reciple")
     }
-  }
+  },
+  computed:{
+    searchReciples(){
+      if(this.search){
+        console.log("SEARCHING");
+      }
+      return this.search;
+    }
+  },
 }
 </script>
 
 <style scoped lang="scss">
 @import "src/global";
 
-div.navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: $CONTAINER;
-  border-radius: 8px;
-  padding: 0 10px 0;
-
-  .buttons {
-    display: flex;
-    flex-direction: row;
-
-    * {
-      &:first-child {
-        margin-right: 30px;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-    }
+div.bar{
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  alignment-baseline: center;
+  margin: 40px 200px 20px;
+  button{
+    margin:0;
+    font-size:20px
   }
-
 }
 
-p.title {
-  font-size: 40px;
-  margin: 0;
+div.search{
+  display: flex;
+  flex:2; //to fit the remaining content
+  input{
+    font-size: 22px;
+    font-family: Quicksand-Bold, sans-serif;
+    color: $TEXT;
+    background: $CONTAINER;
+    height: 60px;
+    border: none;
+    border-radius: 8px;
+    margin:0;
+    padding-left:20px;
+    width:100%;
+    &:focus{
+      outline:none;
+    }
+    &:active{
 
-  &:first-letter {
-    color: $PRIMARY;
+    }
+    &::placeholder{
+      text-align: center;
+    }
   }
-
-  &:after {
-    content: "y";
-    color: $PRIMARY;
+  button{
+    margin-left: -10px;
   }
 }
 </style>
