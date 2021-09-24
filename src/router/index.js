@@ -1,23 +1,30 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from "./../views/Home"
-import P404 from "./../views/P404"
+//import P404 from "./../views/P404"
 import Login from "./../views/Login"
+import Register from "./../views/Register"
+
 const routes = [
-    {
-        path: '/',
-        name: 'home',
-        component: Home,
-    },
     {
         path: '/login',
         name: 'login',
         component: Login,
     },
     {
-        path: "/:pathMatch(.*)*",
-        name: 'p404',
-        component: P404,
+        path: '/register',
+        name: 'register',
+        component: Register,
     },
+    {
+        path: '/',
+        name: 'home',
+        component: Home,
+    },
+    //{
+    //    path: "/:pathMatch(.*)*",
+    //    name: 'p404',
+    //    component: P404,
+    //},
 ];
 
 const router = createRouter({

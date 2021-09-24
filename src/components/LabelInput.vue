@@ -1,7 +1,8 @@
 <template>
   <div class="field">
     <p class="label" v-if="label">{{ label }}</p>
-    <input class="value" :value="value" :type="type"/>
+    <input class="value" :value="modelValue" :type="type"
+      @input="$emit('update:modelValue',$event.target.value)"/>
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 
 export default {
   name: "LabelInput",
-  props: ["label", "type", "value"],
+  props: ["modelValue","label", "type"],
 }
 </script>
 
@@ -23,12 +24,12 @@ div.field {
   margin: 0;
 
   > p {
-    font-size: 25px;
+    font-size: 20px;
     margin: 0;
   }
 
   > input {
-    font-size: 25px;
+    font-size: 22px;
     font-family: Quicksand-Bold, sans-serif;
     color: $TEXT;
     background: $BACKGROUND;

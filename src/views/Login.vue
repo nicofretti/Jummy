@@ -2,10 +2,10 @@
   <div class="container">
     <p class="title">Jumm</p>
     <LabelInput label="Username" type="text" :value="username"/>
-    <LabelInput label="Password" type="password" :value="password" style="margin-top:20px" />
+    <LabelInput label="Password" type="password" :value="password" style="margin-top:20px"/>
     <div class="buttons">
       <button style="margin-top:40px" class="primary">Entra</button>
-      <button style="margin-top:20px" class="secondary">Registrati</button>
+      <button style="margin-top:20px" class="secondary" @click="this.$router.push('register')">Registrati</button>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ div.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 100px auto auto;
+  margin: 30px auto auto;
   width: 600px;
   height: 570px;
   padding: 0 20px 20px;
@@ -63,6 +63,7 @@ div.buttons {
   display: flex;
   justify-content: center;
   flex-direction: column;
+
   button {
     height: 60px;
     width: 350px;
