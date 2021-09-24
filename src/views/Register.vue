@@ -1,38 +1,61 @@
 <template>
   <div class="container">
     <p class="title">Registrazione</p>
-    <LabelInput v-model="username" label="Username" type="text" />
+    <LabelInput v-model="username" label="Username" type="text"/>
     <LabelInput v-model="email" label="Email" type="text" style="margin-top:20px"/>
     <LabelInput v-model="password" label="Password" type="password" style="margin-top:20px"/>
     <LabelInput v-model="confirm_password" label="Conferma password" type="password" style="margin-top:20px"/>
     <div class="buttons">
       <button style="margin-top:40px" class="primary"
-              @click="register">Registrati!</button>
+              @click="register">Registrati!
+      </button>
       <button style="margin-top:20px" class="secondary"
-              @click="this.$router.push('login')">Vai al login</button>
+              @click="this.$router.push('login')">Vai al login
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import LabelInput from "../components/LabelInput"
+import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: 'Register',
   data: () => {
     return {
-      username: "",
-      email:"",
-      password: "",
-      confirm_password:""
+      username: "FrexOver",
+      email: "nico.fretti@gmail.com",
+      password: "asdasd",
+      confirm_password: "asdasd",
     }
   },
   components: {
     LabelInput
   },
   methods: {
-    register(){
-      console.log(this.username,this.email,this.password,this.confirm_password);
+    register() {
+      createUserWithEmailAndPassword(
+          getAuth(),
+          this.email,
+          this.password
+      ).then((data)=>{
+        const db = getFirestore();
+        const userRef = collection(db, 'users');
+
+        setDoc(doc(userRef, data.user.uid), {
+          username: this.username,
+          cart: [],
+          reciples: []
+        }).then(()=>{
+              this.$router.push('/');
+        }
+        )
+      }).catch((error)=>{
+        alert(error.message);
+      });
+      
     }
   }
 }
@@ -57,7 +80,7 @@ p.title {
   font-size: 50px;
   text-align: center;
   margin: 0;
-  color:$PRIMARY;
+  color: $PRIMARY;
 }
 
 div.buttons {
