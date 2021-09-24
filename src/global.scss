@@ -1,0 +1,39 @@
+$PRIMARY: #CA3976;
+$PRIMARY_DARK: #AA2F63;
+$PRIMARY_SOFT: #FF94C1;
+$WHITE: #FFFFFF;
+$CONTAINER: #FFFFFF;
+$BACKGROUND_GREY: #EEEEEE;
+$BACKGROUND: #EEECEE;
+$TEXT: #555555;
+$TEXT_LIGHT: #9B9B9B;
+
+button.primary {
+  color: $WHITE;
+  background: $PRIMARY;
+  font-size: 30px;
+  font-family: Quicksand-Bold, sans-serif;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  margin:auto;
+  cursor: pointer;
+  &:active{
+    opacity:0.7;
+  }
+}
+
+button.secondary {
+  color: $WHITE;
+  background: $PRIMARY_SOFT;
+  font-size: 30px;
+  font-family: Quicksand-Bold, sans-serif;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  margin:auto;
+  cursor: pointer;
+  &:active{
+    opacity:0.7;
+  }
+}

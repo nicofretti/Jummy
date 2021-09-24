@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from "./../views/Home"
 import P404 from "./../views/P404"
-
+import Login from "./../views/Login"
 const routes = [
     {
         path: '/',
@@ -11,7 +11,7 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: Home,
+        component: Login,
     },
     {
         path: "/:pathMatch(.*)*",
@@ -26,22 +26,25 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publics = ['/login', '/register'].includes(to.path);
-    const logged = false;
-    if (logged) {
-        if(publics){
-            //publics pages aren't useful for logged users
-            next("/");
-        }
-        next();
-    }
-    else if (publics) {
-        //anonymous user is checking public pages
-        next();
-    } else {
-        //anonymous user is looking for 'secret' pages
-        next("/login");
-    }
+
+    next();
+    //const publics = ['/login', '/register'].includes(to.path);
+    //const logged = false;
+    //
+    //return;if (logged) {
+    //    if(publics){
+    //        //publics pages aren't useful for logged users
+    //        next("/");
+    //    }
+    //    next();
+    //}
+    //else if (publics) {
+    //    //anonymous user is checking public pages
+    //    next();
+    //} else {
+    //    //anonymous user is looking for 'secret' pages
+    //    next("/login");
+    //}
 });
 
 export default router;

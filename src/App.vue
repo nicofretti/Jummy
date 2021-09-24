@@ -1,5 +1,5 @@
 <template>
-  <router-view />
+  <router-view/>
 </template>
 
 <script>
@@ -10,21 +10,30 @@ export default {
 </script>
 
 <style lang="scss">
-@import "src/colors";
+@import "src/global";
+
 @font-face {
   font-family: Quicksand;
   src: url("assets/fonts/Quicksand.ttf");
 }
+
 @font-face {
   font-family: Quicksand-Bold;
   src: url("assets/fonts/Quicksand-Bold.ttf");
 }
-body{
+
+body {
   background: $BACKGROUND;
-  color:$TEXT;
+  color: $TEXT;
   margin: 20px 40px 0;
   display: flex;
   flex-direction: column;
-  font-family: Quicksand-Bold,sans-serif;
+  font-family: Quicksand-Bold, sans-serif;
+}
+
+div.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

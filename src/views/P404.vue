@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "src/colors";
+@import "src/global";
 div.red{
   background: red;
 }
