@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :active="true" @change="changeNavbar"/>
+    <Navbar active="true" />
     <div class="body">
       <div class="bar">
         <div class="search">
@@ -20,28 +20,7 @@
         <Card :recipe="{
           nome:'Pasta alla carbonara',
           descrizione:'Pasta alla carbonara',
-          prodotti:[{nome:'Pasta',quantita:1}],
-          immagine:'https://firebasestorage.googleapis.com/v0/b/jummy-3a739.appspot.com/o/images%2FfDfXjZwEZ6GQixgbkQCL?alt=media&token=4aa9ef47-4aae-4df2-b7ec-ab1569a3d172'
-          }
-        "/>
-        <Card :recipe="{
-          nome:'Pasta alla carbonara',
-          descrizione:'Pasta alla carbonara',
-          prodotti:[{nome:'Pasta',quantita:1}],
-          immagine:'https://firebasestorage.googleapis.com/v0/b/jummy-3a739.appspot.com/o/images%2FfDfXjZwEZ6GQixgbkQCL?alt=media&token=4aa9ef47-4aae-4df2-b7ec-ab1569a3d172'
-          }
-        "/>
-        <Card :recipe="{
-          nome:'Pasta alla carbonara',
-          descrizione:'Pasta alla carbonara',
-          prodotti:[{nome:'Pasta',quantita:1}],
-          immagine:'https://firebasestorage.googleapis.com/v0/b/jummy-3a739.appspot.com/o/images%2FfDfXjZwEZ6GQixgbkQCL?alt=media&token=4aa9ef47-4aae-4df2-b7ec-ab1569a3d172'
-          }
-        "/>
-        <Card :recipe="{
-          nome:'Grits, la ricetta americana finta di prova',
-          descrizione:'Pasta alla carbonara',
-          prodotti:[{nome:'Pasta',quantita:1}],
+          prodotti:[{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1}],
           immagine:'https://firebasestorage.googleapis.com/v0/b/jummy-3a739.appspot.com/o/images%2FfDfXjZwEZ6GQixgbkQCL?alt=media&token=4aa9ef47-4aae-4df2-b7ec-ab1569a3d172'
           }
         "/>
@@ -72,7 +51,7 @@ export default {
   },
   methods: {
     newReciple(){
-      this.$router.push("/add_reciple")
+      this.$router.push("/add_recipe")
     }
   },
   computed:{
@@ -132,6 +111,6 @@ div.reciples{
   padding: 40px 0 40px;
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  gap:20px
+  gap:50px
 }
 </style>

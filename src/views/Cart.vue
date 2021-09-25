@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Navbar :selected="selected" @change="changeNavbar"/>
-    <p>Ricetta x</p>
+    <Navbar active="true"/>
+    <p>Carrelo :)</p>
   </div>
 </template>
 

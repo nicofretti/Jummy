@@ -1,11 +1,9 @@
 <template>
   <div class="navbar">
-    <p class="title">Jumm</p>
+    <div class="title" @click="redirect('/')">Jumm</div>
     <div class="buttons">
-      <CartIcon @click="cart"
-                w="50" h="50"/>
-      <LogOutIcon @click="logout()"
-                  w="50" h="50"/>
+      <CartIcon @click="redirect('/cart')" w="50" h="50"/>
+      <LogOutIcon @click="logout" w="50" h="50"/>
     </div>
   </div>
 </template>
@@ -36,11 +34,13 @@ export default {
             alert(error);
           })
     },
-    cart() {
+    redirect(path) {
+      //if active is false user have to confirm to change page
       if(!this.active && confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")){
-        this.$router.push("/add_reciple");
+        this.$router.push(path);
+      }else{
+        this.$router.push(path);
       }
-
     }
   }
 }
@@ -81,10 +81,15 @@ div.navbar {
   }
 }
 
-p.title {
+div.title {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   font-size: 50px;
   margin: 0;
-
+  cursor: pointer;
   &:first-letter {
     color: $PRIMARY;
   }

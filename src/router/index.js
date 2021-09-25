@@ -3,6 +3,8 @@ import Home from "./../views/Home"
 import Login from "./../views/Login"
 import Register from "./../views/Register"
 import AddRecipe from "./../views/AddRecipe"
+import Recipe from "./../views/Recipe"
+import Cart from "./../views/Cart"
 import firebase from "firebase/compat/app";
 
 const routes = [
@@ -22,9 +24,19 @@ const routes = [
         component: Home,
     },
     {
-        path: '/add_reciple',
-        name: 'add_reciple',
+        path: '/add_recipe',
+        name: 'add_recipe',
         component: AddRecipe,
+    },
+    {
+        path: '/recipe',
+        name: 'recipe',
+        component: Recipe,
+    },
+    {
+        path: '/cart',
+        name: 'cart',
+        component: Cart,
     },
     //{
     //    path: "/:pathMatch(.*)*",

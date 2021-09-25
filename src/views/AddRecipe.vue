@@ -125,7 +125,6 @@ div.form {
   flex-direction: column;
   justify-content: center;
   max-width: 700px;
-
   font-size: 20px;
 
   textarea {
