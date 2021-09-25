@@ -54,7 +54,6 @@ div.container {
   padding: 0 20px 20px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-
 p.title {
   font-size: 100px;
   text-align: center;

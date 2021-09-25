@@ -3,6 +3,7 @@ import Home from "./../views/Home"
 import Login from "./../views/Login"
 import Register from "./../views/Register"
 import Reciple from "./../views/Reciple"
+import firebase from "firebase/compat/app";
 
 const routes = [
     {
@@ -36,7 +37,7 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
-import firebase from "firebase/compat/app";
+
 router.beforeEach(async (to, from, next) => {
     const publics = ['/login', '/register'].includes(to.path);
     const logged = await firebase.getCurrentUser();

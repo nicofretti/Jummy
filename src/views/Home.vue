@@ -57,11 +57,11 @@ export default {
 <style scoped lang="scss">
 @import "src/global";
 
+
 div.bar{
   display:flex;
   justify-content: center;
   align-items:center;
-  alignment-baseline: center;
   margin: 40px 200px 20px;
   button{
     margin:0;
@@ -85,9 +85,6 @@ div.search{
     width:100%;
     &:focus{
       outline:none;
-    }
-    &:active{
-
     }
     &::placeholder{
       text-align: center;
