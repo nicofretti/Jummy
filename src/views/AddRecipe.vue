@@ -3,11 +3,11 @@
     <Navbar :active="activeNav"/>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput style="margin-top:20px" v-model="reciple.name" label="Nome ricetta" type="text"
+      <LabelInput style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
                   styleInput="background:white"/>
       <div style="margin-top:20px">
         <p>Descrizione</p>
-        <textarea/>
+        <textarea v-model="recipe.descrizione"/>
       </div>
       <div style="margin-top:20px">
         <p>Immagine</p>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="buttons">
-        <button style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
+        <button @click="back" style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
         <button @click="addReciple" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">Aggiungi ricetta!
         </button>
       </div>
@@ -39,10 +39,10 @@
 import Navbar from "../components/Navbar";
 import LabelInput from "../components/LabelInput"
 import EditProduct from "../components/EditProduct"
-import Reciples from "../controllers/Reciples"
+import Recipes from "../controllers/Recipes"
 
 export default {
-  name: 'Reciple',
+  name: 'AddReciple',
   props: [],
   components: {
     Navbar,
@@ -52,17 +52,17 @@ export default {
   data: () => {
     return {
       activeNav: false,
-      reciple: {
-        name: "",
-        description: "",
-        img: "",
+      recipe: {
+        nome: "asd",
+        descrizione: "asd",
+        immagine: "",
       },
-      products: [{nome: "", quantita: 1}]
+      products: [{nome: "asd", quantita: 1}]
     }
   },
   methods: {
     changeProduct(idx, obj) {
-      //make a copy to trigger vue
+      //make a copy to trigger Vue
       let copy = this.products.slice();
 
       if (obj.quantita === 0) {
@@ -71,7 +71,7 @@ export default {
       } else {
         copy[idx] = obj;
       }
-      //trigger of vue
+      //trigger of Vue
       this.products = copy;
 
     },
@@ -79,19 +79,38 @@ export default {
       this.products.push({nome: "", quantita: 1});
     },
     fileEdit(e){
-      this.reciple.img = {
+      this.recipe.immagine = {
         file:e.target.files[0],
         url:URL.createObjectURL(e.target.files[0])
       }
-      console.log(this.reciple.img);
     },
     addReciple(){
-      Reciples.createReciple({
-        nome:"prova",
-        descrizione:"prova",
-        image: this.img,
-        prodotti:[{nome:"pasta",quantita:1}]
-      });
+      if(this.recipe.name!=="" && this.recipe.descrizione!=="" && this.productsValid() ){
+        Recipes.createRecipe({
+          ...this.recipe,
+          prodotti:this.products
+        });
+      }else{
+        alert("Non sono stati compilati i campi minimi");
+      }
+
+    },
+    productsValid(){
+      if(this.products.length===0){
+        return false;
+      }
+      for(let product of this.products) {
+        if (product.nome === "" || product.quantita<=0) {
+          return false;
+        }
+      }
+      //all products have quantity and name
+      return true;
+    },
+    back(){
+      if(confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")){
+        this.$router.push("/");
+      }
     }
   }
 }
@@ -106,22 +125,24 @@ div.form {
   flex-direction: column;
   justify-content: center;
   max-width: 700px;
+
   font-size: 20px;
 
   textarea {
     margin: auto;
     width: 100%;
-    max-width: 700px;
+    max-width: 660px;
     min-height: 200px;
     border: none;
     border-radius: 8px;
-  }
-
-  input {
-    font-family: Quicksand-Bold, sans-serif;
+    padding: 10px 20px 10px;
+    font-size: 18px;
+    color:$TEXT
   }
 
   * {
+    font-family: Quicksand-Bold, sans-serif;
+
     margin: 0;
   }
 }

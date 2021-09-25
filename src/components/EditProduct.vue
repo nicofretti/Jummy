@@ -36,7 +36,6 @@ export default {
   },
   methods:{
     changeName(e){
-      console.log("text");
       if(e.target.value!==undefined && e.target.value){
         //to catch the effective editing
         this.product.nome = e.target.value;

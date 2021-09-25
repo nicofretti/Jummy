@@ -9,9 +9,10 @@
 import Navbar from "../components/Navbar";
 
 export default {
-  name: 'Home',
+  name: 'Recipe',
   props: [],
   components: {
+
     Navbar
   },
   data: () => {

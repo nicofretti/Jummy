@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from "./../views/Home"
 import Login from "./../views/Login"
 import Register from "./../views/Register"
-import Reciple from "./../views/Reciple"
+import AddRecipe from "./../views/AddRecipe"
 import firebase from "firebase/compat/app";
 
 const routes = [
@@ -24,7 +24,7 @@ const routes = [
     {
         path: '/add_reciple',
         name: 'add_reciple',
-        component: Reciple,
+        component: AddRecipe,
     },
     //{
     //    path: "/:pathMatch(.*)*",
