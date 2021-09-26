@@ -15,7 +15,8 @@ button.primary {
   font-family: Quicksand-Bold, sans-serif;
   text-align: center;
   border: none;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 20px;
   margin:auto;
   cursor: pointer;
   &:active{
@@ -30,8 +31,9 @@ button.secondary {
   font-family: Quicksand-Bold, sans-serif;
   text-align: center;
   border: none;
-  border-radius: 8px;
   margin:auto;
+  padding:10px;
+  border-radius: 20px;
   cursor: pointer;
   &:active{
     opacity:0.7;

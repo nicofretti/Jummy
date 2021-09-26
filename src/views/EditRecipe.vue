@@ -47,7 +47,7 @@ import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
 
 export default {
-  name: 'AddReciple',
+  name: 'EditRecipe',
   props: [],
   components: {
     Navbar,

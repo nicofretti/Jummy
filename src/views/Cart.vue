@@ -1,11 +1,27 @@
 <template>
   <div>
     <Navbar active="true"/>
-    <p>Carrelo :)</p>
+    <div class="cart">
+      <p class="action">Il tuo carrello!</p>
+      <div id="asd" class="products">
+        <EditProduct v-for="(product,idx) in cart"
+                     :key="idx" :idx="idx"
+                     :nome="product.nome"
+                     :editNome="false"
+                     :quantita="product.quantita"
+                     v-on:edit="changeProduct"/>
+      </div>
+      <div class="buttons">
+        <button class="secondary" @click="emptyCart">Svuota il carrello</button>
+        <button class="primary" style="margin-left:20px" @click="print">Stampa carrello</button>
+      </div>
+
+    </div>
   </div>
 </template>
 
 <script>
+import EditProduct from "../components/EditProduct"
 import Navbar from "../components/Navbar";
 import Cart from "../controllers/Cart"
 
@@ -13,23 +29,45 @@ export default {
   name: 'Cart',
   props: [],
   components: {
-    Navbar
-  },
-  created(){
-    Cart.get().then((cart)=>{
-      console.log(cart);
-    }).catch((error)=>{
-      console.log(error);
-    });
+    Navbar,
+    EditProduct
   },
   data: () => {
     return {
-      selected: ""
+      cart: []
     }
   },
+  created() {
+    Cart.get().then((cart) => {
+      this.cart = cart;
+    }).catch((error) => {
+      console.log(error);
+    });
+  },
   methods: {
-    changeNavbar(value) {
-      this.selected = value;
+    print(){
+      window.print();
+    },
+    changeProduct(idx, obj) {
+      //make a copy to trigger Vue
+      let copy = this.products.slice();
+
+      if (obj.quantita === 0) {
+        //remove element from array
+        copy.splice(idx, 1);
+      } else {
+        copy[idx] = obj;
+      }
+      //trigger of Vue
+      this.products = copy;
+
+    },
+    emptyCart(){
+      Cart.update([]).then((cart) => {
+        this.cart = cart;
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   }
 }
@@ -38,44 +76,45 @@ export default {
 <style scoped lang="scss">
 @import "src/global";
 
-div.navbar {
+div.cart {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: $CONTAINER;
-  border-radius: 8px;
-  padding: 0 10px 0;
-
-  .buttons {
-    display: flex;
-    flex-direction: row;
-
-    * {
-      &:first-child {
-        margin-right: 30px;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-    }
+  margin: auto auto 20px;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 700px;
+  font-size: 20px;
+  padding: 0 210px 0;
+  * {
+    margin: 0;
   }
-
+  >button{
+    alignment: left;
+    margin:20px auto auto;
+  }
 }
 
-p.title {
+//Title of the page
+p.action {
+  color: $PRIMARY;
   font-size: 40px;
-  margin: 0;
+  text-align: center;
+  margin: 20px 0 0;
+}
 
-  &:first-letter {
-    color: $PRIMARY;
+div.products {
+  >* {
+    border-bottom: 1px dashed $TEXT;
+    padding-bottom: 2px;
+    margin-bottom: 3px;
   }
+  *{
+    font-size: 22px;
+  }
+}
 
-  &:after {
-    content: "y";
-    color: $PRIMARY;
-  }
+div.buttons{
+  display: flex;
+  margin-top:20px;
+  justify-content: center;
 }
 </style>

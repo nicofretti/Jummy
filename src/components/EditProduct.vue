@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <input placeholder="Nome prodotto..." :value="nome" @input="changeName" type="text"/>
+    <input :class="this.editNome ? '': 'disabled'" :disabled="!this.editNome" placeholder="Nome prodotto..." :value="nome" @input="changeName" type="text"/>
     <div>
       <button class="primary" @click="decrease">
         <RemoveCircleOutline w="35" h="35"/>
@@ -20,7 +20,11 @@ import RemoveCircleOutline from 'vue-ionicons/dist/md-remove-circle-outline';
 
 export default {
   name: "EditProduct",
-  props: ["idx","nome","quantita"],
+  props: ["idx",
+          "nome",
+          "quantita",
+          "editNome" //enables to edit product name
+  ],
   emit:["edit"],
   data(){
     return {
@@ -99,6 +103,10 @@ div.product {
     min-width: 40px;
     margin: 5px 2px 0;
     border-radius: 8px;
+  }
+  input.disabled{
+    background: transparent;
+    border:none;
   }
 }
 
