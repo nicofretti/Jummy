@@ -17,13 +17,7 @@
         </button>
       </div>
       <div class="reciples">
-        <Card :recipe="{
-          nome:'Pasta alla carbonara',
-          descrizione:'Pasta alla carbonara',
-          prodotti:[{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1},{nome:'Pasta',quantita:1}],
-          immagine:'https://firebasestorage.googleapis.com/v0/b/jummy-3a739.appspot.com/o/images%2FfDfXjZwEZ6GQixgbkQCL?alt=media&token=4aa9ef47-4aae-4df2-b7ec-ab1569a3d172'
-          }
-        "/>
+        <Card v-for="(rec,idx) in this.recipes" :recipe="rec" :key="idx"/>
       </div>
     </div>
   </div>
@@ -34,6 +28,7 @@ import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import AddCircleOutline from 'vue-ionicons/dist/md-add-circle-outline';
 import Search from 'vue-ionicons/dist/md-search';
+import Recipes from "../controllers/Recipes"
 export default {
   name: 'Home',
   props: [],
@@ -46,13 +41,16 @@ export default {
   data: () => {
     return {
       search:"",
-      selected: ""
+      recipes:[],
     }
   },
   methods: {
     newReciple(){
       this.$router.push("/add_recipe")
     }
+  },
+  async created(){
+    this.recipes = await Recipes.all();
   },
   computed:{
     searchReciples(){

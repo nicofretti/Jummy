@@ -11,7 +11,7 @@
 
 <script>
 import Basket from 'vue-ionicons/dist/ios-basket';
-import Document from 'vue-ionicons/dist/md-document';
+import Document from 'vue-ionicons/dist/ios-document';
 export default {
   name: "Card",
   props: ["id", "recipe"],

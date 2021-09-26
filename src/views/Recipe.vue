@@ -2,17 +2,20 @@
   <Navbar active="true"/>
   <div class="recipe" v-if="this.recipe.nome">
     <div class="header">
-      <p class="title">{{this.recipe.nome}}</p>
-
-      <button @click="edit"><Create w="40" h="40"/></button>
-      <button @click="remove" style="margin-left: 15px"><Trash w="40" h="40"/></button>
+      <p class="title">{{ this.recipe.nome }}</p>
+      <button @click="edit">
+        <Create w="40" h="40"/>
+      </button>
+      <button @click="remove" style="margin-left: 15px">
+        <Trash w="40" h="40"/>
+      </button>
     </div>
     <div class="image" v-bind:style="{background: 'url('+(this.recipe.immagine)+')'}"/>
-    <p class="description">{{this.recipe.descrizione}}</p>
+    <p class="description">{{ this.recipe.descrizione }}</p>
     <p class="subtitle">Ingredienti</p>
     <ul>
       <li v-for="(prod,idx) in this.recipe.prodotti" :key="idx">
-        {{prod.nome}} x {{prod.quantita}}
+        {{ prod.nome }} x {{ prod.quantita }}
       </li>
     </ul>
   </div>
@@ -26,6 +29,8 @@
 import Navbar from "../components/Navbar";
 import Trash from 'vue-ionicons/dist/md-trash';
 import Create from 'vue-ionicons/dist/md-create';
+import Recipes from "../controllers/Recipes"
+
 export default {
   name: 'Recipe',
   params: [],
@@ -35,23 +40,31 @@ export default {
     Create
   },
   data: () => {
-    return{
-      recipe:{}
+    return {
+      recipe: {},
     }
   },
   created() {
     const recipe = localStorage.getItem('recipe');
     console.log("created");
-    if(recipe){
+    if (recipe) {
       this.recipe = JSON.parse(recipe);
     }
   },
-  methods:{
-    remove(){
-      console.log("going to delete")
+  methods: {
+    remove() {
+      if (confirm("Confermare la cancellazione della ricetta?")) {
+        Recipes.delete(this.recipe.id).then(() => {
+          console.log("cancellazione completata");
+          localStorage.getItem('recipe'); //clear localstorage
+          this.$router.push("/");
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
     },
-    edit(){
-      console.log("going to edit");
+    edit() {
+      this.$router.push('edit_recipe');
     }
   }
 }
@@ -60,57 +73,65 @@ export default {
 <style scoped lang="scss">
 @import "src/global";
 
-div.recipe{
+div.recipe {
   display: flex;
   margin: 20px auto 20px;
   flex-direction: column;
   justify-content: center;
   max-width: 700px;
   font-size: 20px;
-  *{
-    margin:0
+
+  * {
+    margin: 0
   }
 }
-div.header{
+
+div.header {
   display: flex;
   justify-content: space-between;
-  p{
+
+  p {
     //title
-    flex:2;
-    font-family: Quicksand-Bold,sans-serif;
+    flex: 2;
+    font-family: Quicksand-Bold, sans-serif;
     font-size: 40px;
-    color:$PRIMARY;
+    color: $PRIMARY;
   }
-  button{
+
+  button {
     //actions
-    fill:$PRIMARY;
+    fill: $PRIMARY;
     background: transparent;
-    border:none;
-    &:active{
-      opacity:0.5;
+    border: none;
+
+    &:active {
+      opacity: 0.5;
     }
   }
 
 }
-div.image{
+
+div.image {
   width: 100%;
-  margin-top:20px;
+  margin-top: 20px;
   min-height: 215px;
   border-radius: 10px;
   background-position: center !important;
   background-size: cover !important;
 }
-p.description{
+
+p.description {
   //description of recipe
-  margin-top:20px;
-  font-family: Quicksand,sans-serif;
+  margin-top: 20px;
+  font-family: Quicksand, sans-serif;
   text-align: justify;
   font-size: 20px;
 
 }
-p.subtitle{
-  color:$PRIMARY;
-  font-size:20px;
+
+p.subtitle {
+  color: $PRIMARY;
+  font-size: 20px;
   margin: 10px 0 10px;
 }
 </style>

@@ -5,6 +5,7 @@ import Register from "./../views/Register"
 import AddRecipe from "./../views/AddRecipe"
 import Recipe from "./../views/Recipe"
 import Cart from "./../views/Cart"
+import EditRecipe from "./../views/EditRecipe"
 import firebase from "firebase/compat/app";
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
         path: '/cart',
         name: 'cart',
         component: Cart,
+    },
+    {
+        path: '/edit_recipe',
+        name: 'edit_recipe',
+        component: EditRecipe,
     },
     //{
     //    path: "/:pathMatch(.*)*",

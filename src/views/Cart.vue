@@ -7,12 +7,20 @@
 
 <script>
 import Navbar from "../components/Navbar";
+import Cart from "../controllers/Cart"
 
 export default {
-  name: 'Home',
+  name: 'Cart',
   props: [],
   components: {
     Navbar
+  },
+  created(){
+    Cart.get().then((cart)=>{
+      console.log(cart);
+    }).catch((error)=>{
+      console.log(error);
+    });
   },
   data: () => {
     return {

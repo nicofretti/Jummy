@@ -8,7 +8,8 @@
       <div style="margin-top:20px">
         <p>Immagine</p>
         <div class="image"
-             v-bind:style="this.recipe.immagine !==''&&{background: 'url('+(this.recipe.immagine.url ? this.recipe.immagine.url:this.recipe.immagine)+')'}"
+             v-bind:style="this.recipe.immagine !==''&&
+             {background: 'url('+(this.recipe.immagine.url ? this.recipe.immagine.url:this.recipe.immagine)+')'}"
         />
         <input type="file" @change="fileEdit" accept="image/*"/>
       </div>
@@ -31,8 +32,8 @@
       </div>
       <div class="buttons">
         <button @click="back" style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
-        <button @click="addRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">
-          Aggiungi ricetta!
+        <button @click="updateRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">
+          Modifica ricetta!
         </button>
       </div>
     </div>
@@ -56,12 +57,15 @@ export default {
   data: () => {
     return {
       activeNav: false,
-      recipe: {
-        nome: "",
-        descrizione: "",
-        immagine: "",
-      },
-      products: [{nome: "", quantita: 1}]
+      recipe: {},
+      products : []
+    }
+  },
+  created() {
+    const recipe = localStorage.getItem('recipe');
+    if (recipe) {
+      this.recipe = JSON.parse(recipe);
+      this.products = this.recipe.prodotti;
     }
   },
   methods: {
@@ -92,16 +96,14 @@ export default {
         this.recipe.immagine = "";
       }
     },
-    addRecipe() {
+    updateRecipe() {
       if (this.recipe.name !== "" && this.recipe.descrizione !== "" && this.productsValid()) {
-        Recipes.create({
-          ...this.recipe,
-          prodotti: this.products
-        }).then(()=>{
-          this.$router.push("/");
-        }).catch((error)=>{
-          console.log(error);
-        });
+        Recipes.update({...this.recipe,prodotti:this.products}).
+        then((newRecipe)=> {
+          localStorage.setItem('recipe',JSON.stringify(newRecipe));
+          this.$router.go(-1);
+        })
+        .catch((error)=>{console.log(error)});
       } else {
         alert("Non sono stati compilati i campi minimi");
       }
@@ -121,7 +123,7 @@ export default {
     },
     back() {
       if (confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {
-        this.$router.push("/");
+        this.$router.pop();
       }
     }
   }
@@ -187,13 +189,13 @@ div.buttons {
   display: flex;
   justify-content: center;
   margin: 20px 0 0;
-}
 
+}
 div.image {
   width: 100%;
+  margin-top: 20px;
   min-height: 215px;
   border-radius: 10px;
-  border:1px dotted $TEXT;
   background-position: center !important;
   background-size: cover !important;
 }
