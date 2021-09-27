@@ -4,7 +4,7 @@
     <Loader :active="loading" message="Stiamo caricando la nuova ricetta..."/>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput :error="this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
+      <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
                   styleInput="background:white"/>
       <div style="margin-top:20px">
         <p>Immagine</p>
@@ -25,7 +25,7 @@
                        :nome="product.nome"
                        :quantita="product.quantita"
                        editNome="true"
-                       :error="this.validValues.prodotti[idx]"
+                       :error="!this.validValues.prodotti[idx]"
                        v-on:edit="changeProduct"/>
           <button class="secondary" @click="addProduct">
             Aggiungi prodotto

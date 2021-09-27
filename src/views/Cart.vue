@@ -9,6 +9,7 @@
                      :key="idx" :idx="idx"
                      :nome="product.nome"
                      :editNome="false"
+                     :error="false"
                      :quantita="product.quantita"
                      v-on:edit="changeProduct"/>
       </div>

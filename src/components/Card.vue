@@ -3,8 +3,8 @@
     <div class="image" v-bind:style="{background: 'url('+(this.recipe.immagine)+')'}"/>
     <p>{{this.recipe.nome}}</p>
     <div class="actions">
-      <button class="secondary" @click="viewRecipe"><Document w="40" h="40"/></button>
-      <button class="primary" @click="addProducts" style="margin-left: 20px"><Basket w="40" h="40"/></button>
+      <button class="secondary" style="border-radius:8px;padding:2px 5px 2px" @click="viewRecipe"><Document w="40" h="40"/></button>
+      <button class="primary" @click="addProducts" style="margin-left: 20px;border-radius:8px;padding:2px 5px 2px"><Basket w="40" h="40"/></button>
     </div>
   </div>
 </template>
