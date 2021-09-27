@@ -55,7 +55,6 @@ export default class Recipes {
     static async delete(id) {
         const db = getFirestore();
         const logged = await firebase.getCurrentUser();
-        console.log(id);
         await deleteDoc(doc(db, `users/${logged.uid}/recipes`, id));
     }
 

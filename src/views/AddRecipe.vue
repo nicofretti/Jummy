@@ -4,7 +4,8 @@
     <Loader :active="loading" message="Stiamo caricando la nuova ricetta..."/>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
+      <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta"
+                  type="text"
                   styleInput="background:white"/>
       <div style="margin-top:20px">
         <p>Immagine</p>
@@ -20,7 +21,7 @@
       <div style="margin-top:20px">
         <p>Prodotti</p>
         <div class="products">
-          <EditProduct v-for="(product,idx) in products"
+          <EditProduct v-for="(product,idx) in this.products"
                        :key="idx" :idx="idx"
                        :nome="product.nome"
                        :quantita="product.quantita"
@@ -61,100 +62,121 @@ export default {
   data: () => {
     return {
       activeNav: false,
-      loading:false,
+      loading: false,
       recipe: {
-        nome: "",
-        descrizione: "",
+        nome: "Spaghetti all'amatriciana",
+        descrizione: "I piatti regionali sono spesso motivo di disputa tra gli italiani, che si tratti di chef professionisti o cuochi amatoriali, e gli spaghetti all’Amatriciana non fanno eccezione! Bucatini o spaghetti, pancetta o guanciale, aglio o cipolla… questi i principali interrogativi che chiunque si appresti a cucinare per la prima volta questa ricetta si trova a dover affrontare. Si dice che questo famoso piatto nato ad Amatrice fosse il pasto principale dei pastori, ma originariamente era senza pomodoro e prendeva il nome di “gricia”; questo ingrediente fu aggiunto in seguito quando i pomodori vennero importati dalle Americhe e il condimento prese il nome di Amatriciana. E’ quindi normale che una ricetta così antica e popolare si sia trasformata nel tempo assumendo le numerose varianti di cui ancora si discute al giorno d’oggi. Quella che vi proponiamo qui è la nostra versione, preparata con ingredienti locali e di qualità. Perché pensiamo che in realtà la ricetta degli spaghetti all’Amatriciana non divida l’Italia, bensì la unisca nel nome della bontà di una pietanza dall’animo semplice e dal carattere deciso… proprio come chi l’ha creata!",
         immagine: "",
       },
       products: [{nome: "", quantita: 1}],
-      validValues:{
-        nome:true,
-        descrizione:true,
-        prodotti:[true],
+      validValues: {
+        nome: true,
+        descrizione: true,
+        prodotti: [true],
       }
     }
   },
   methods: {
     changeProduct(idx, obj) {
-      console.log(idx);
-      //make a copy to trigger Vue
-      let copy = this.products.slice();
+      // Some problem to edit a list of objects, then I choose to add fake objects to don't makes some bugs
+      // also before putting objects in database I remove the fakes
+      let copy = [];
+      this.products.forEach((val, i) => {
+            if (i === idx) {
+              //edited object
+              if (obj.quantita <= 0) {
+                copy.push({}); //adding fake object to keep indexing
+              } else {
+                copy.push(obj);
+              }
 
-      if (obj.quantita == 0 || obj.quantita<0) {
-        //remove element from array
-        copy.splice(idx, 1);
-      } else {
-        copy[idx] = obj;
-      }
-      //trigger of Vue
+            } else {
+              copy.push(val);
+            }
+          }
+      );
       this.products = copy;
 
     },
     addProduct() {
       this.products.push({nome: "", quantita: 1});
       this.validValues.prodotti.push(true); //to disable errors on add
-    },
+    }
+    ,
     fileEdit(e) {
-      if(e.target.files.length!==0){
+      if (e.target.files.length !== 0) {
         this.recipe.immagine = {
           file: e.target.files[0],
           url: URL.createObjectURL(e.target.files[0])
         }
-      }else{
+      } else {
         this.recipe.immagine = "";
       }
     },
     addRecipe() {
-      this.loading=true;
-      if (this.checkForm()) {
+      this.loading = true;
+      let products = this.getProductsValid();
+      if (this.checkRecipe() && products.length > 0) {
         Recipes.create({
           ...this.recipe,
-          prodotti: this.products
-        }).then(()=>{
+          prodotti: products
+        }).then(() => {
           this.$router.push("/");
-        }).catch((error)=>{
+        }).catch((error) => {
           console.log(error);
         });
       } else {
-        alert("Non sono stati compilati i campi minimi");
+        alert("Non sono stati compilati i campi minimi o sono presenti degli errori");
       }
-      this.loading=false;
+      this.loading = false;
 
-    },
-    checkForm(){
-      let formValid = this.recipe.nome !== "" && this.recipe.descrizione !== ""
-      if(!this.productsValid() || !formValid){
+    }
+    ,
+    checkRecipe() {
+      //methods that check if the recipe has name and description, otherwise it set the errors
+      let formValid = this.recipe.nome !== "" && this.recipe.descrizione !== "";
+      if (!formValid) {
         this.validValues.nome = this.recipe.nome !== "";
         this.validValues.descrizione = this.recipe.descrizione !== "";
         return false
       }
       return true;
     },
-    productsValid() {
-      if (this.products.length === 0) {
-        return false;
-      }
+    getProductsValid() {
+      //methods that return the valid products checking for fakes and wrong typed
       let productValid = [];
-      let valid = true;
+      let realProducts = [];
+      let wrong = false;
+      if (this.products.length === 0) {
+        return [];
+      }
       for (let product of this.products) {
-        if (product.nome === "" || product.quantita <= 0) {
-          productValid.push(false);
-          valid=false;
-        }else{
+        if (Object.keys(product).length === 0) {
+          //fakes objects
           productValid.push(true);
+        } else if (product.nome === "" || product.quantita <= 0) {
+          // products wrong typed
+          productValid.push(false);
+          wrong = true;
+        } else {
+          // real products well typed
+          productValid.push(true);
+          realProducts.push(product);
         }
+        //Object.keys(product).length === 0
       }
       this.validValues.prodotti = productValid;
-      //all products have quantity and name
-      return valid;
+      if (wrong) {
+        return [];
+      }
+      return realProducts;
     },
     back() {
       if (confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {
         this.$router.push("/");
       }
     }
-  }
+  },
 }
 </script>
 
@@ -223,7 +245,7 @@ div.image {
   width: 100%;
   min-height: 215px;
   border-radius: 10px;
-  border:1px dotted $TEXT;
+  border: 1px dotted $TEXT;
   background-position: center !important;
   background-size: cover !important;
 }

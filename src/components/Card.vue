@@ -12,6 +12,7 @@
 <script>
 import Basket from 'vue-ionicons/dist/ios-basket';
 import Document from 'vue-ionicons/dist/ios-document';
+import Cart from "../controllers/Cart"
 export default {
   name: "Card",
   props: ["id", "recipe"],
@@ -21,7 +22,11 @@ export default {
   },
   methods:{
     addProducts(){
-      console.log(this.recipe.prodotti);
+      Cart.update(this.recipe.prodotti)
+          .then(()=>{
+            console.log("tutto ok");
+          })
+          .catch((error)=>{console.log(error)})
     },
     viewRecipe(){
       localStorage.setItem('recipe',JSON.stringify(this.recipe));

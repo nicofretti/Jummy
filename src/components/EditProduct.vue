@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <div class="product" v-if="product.quantita>0">
     <input placeholder="Nome prodotto..."
            :class="this.editNome ? '': 'disabled'"
            :disabled="!this.editNome"
@@ -46,6 +46,10 @@ export default {
   },
   methods: {
     changeName(e) {
+      if(e.target.value===""){
+        this.product.nome="";
+        this.$emit('edit', this.idx, this.product)
+      }
       if (e.target.value !== undefined && e.target.value) {
         //to catch the effective editing
         this.product.nome = e.target.value;

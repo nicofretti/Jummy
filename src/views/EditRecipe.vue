@@ -1,9 +1,11 @@
 <template>
   <div>
     <Navbar :active="activeNav"/>
+    <Loader :active="loading" message="Stiamo modificando la ricetta..."/>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
+      <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta"
+                  type="text"
                   styleInput="background:white"/>
       <div style="margin-top:20px">
         <p>Immagine</p>
@@ -15,7 +17,7 @@
       </div>
       <div style="margin-top:20px">
         <p>Descrizione</p>
-        <textarea v-model="recipe.descrizione"/>
+        <textarea :style="!this.validValues.descrizione && 'background-color:#ecdada'" v-model="recipe.descrizione"/>
       </div>
       <div style="margin-top:20px">
         <p>Prodotti</p>
@@ -24,6 +26,8 @@
                        :key="idx" :idx="idx"
                        :nome="product.nome"
                        :quantita="product.quantita"
+                       editNome="true"
+                       :error="!this.validValues.prodotti[idx]"
                        v-on:edit="changeProduct"/>
           <button class="secondary" @click="addProduct">
             Aggiungi prodotto
@@ -32,7 +36,8 @@
       </div>
       <div class="buttons">
         <button @click="back" style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
-        <button @click="updateRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">
+        <button @click="updateRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px"
+                class="primary">
           Modifica ricetta!
         </button>
       </div>
@@ -45,7 +50,7 @@ import Navbar from "../components/Navbar";
 import LabelInput from "../components/LabelInput"
 import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
-
+import Loader from "../components/Loader"
 export default {
   name: 'EditRecipe',
   props: [],
@@ -53,12 +58,19 @@ export default {
     Navbar,
     LabelInput,
     EditProduct,
+    Loader
   },
   data: () => {
     return {
       activeNav: false,
       recipe: {},
-      products : []
+      products: [],
+      loading:false,
+      validValues: {
+        nome: true,
+        descrizione: true,
+        prodotti: [true],
+      }
     }
   },
   created() {
@@ -66,60 +78,102 @@ export default {
     if (recipe) {
       this.recipe = JSON.parse(recipe);
       this.products = this.recipe.prodotti;
+      for (let i = 0; i < this.products.length; i++) {
+        this.validValues.prodotti.push(true);//initially the data are valid
+      }
     }
   },
   methods: {
     changeProduct(idx, obj) {
-      //make a copy to trigger Vue
-      let copy = this.products.slice();
+      // Some problem to edit a list of objects, then I choose to add fake objects to don't makes some bugs
+      // also before putting objects in database I remove the fakes
+      let copy = [];
+      this.products.forEach((val, i) => {
+            if (i === idx) {
+              //edited object
+              if (obj.quantita <= 0) {
+                copy.push({}); //adding fake object to keep indexing
+              } else {
+                copy.push(obj);
+              }
 
-      if (obj.quantita === 0) {
-        //remove element from array
-        copy.splice(idx, 1);
-      } else {
-        copy[idx] = obj;
-      }
-      //trigger of Vue
+            } else {
+              copy.push(val);
+            }
+          }
+      );
       this.products = copy;
 
     },
     addProduct() {
       this.products.push({nome: "", quantita: 1});
+      this.validValues.prodotti.push(true);
     },
     fileEdit(e) {
-      if(e.target.files.length!==0){
+      if (e.target.files.length !== 0) {
         this.recipe.immagine = {
           file: e.target.files[0],
           url: URL.createObjectURL(e.target.files[0])
         }
-      }else{
+      } else {
         this.recipe.immagine = "";
       }
     },
     updateRecipe() {
-      if (this.recipe.name !== "" && this.recipe.descrizione !== "" && this.productsValid()) {
-        Recipes.update({...this.recipe,prodotti:this.products}).
-        then((newRecipe)=> {
-          localStorage.setItem('recipe',JSON.stringify(newRecipe));
+      this.loading = true;
+      let products = this.getProductsValid();
+      if (this.checkRecipe() && products.length > 0) {
+        Recipes.update({...this.recipe, prodotti: products}).then((newRecipe) => {
+          localStorage.setItem('recipe', JSON.stringify(newRecipe));
           this.$router.go(-1);
         })
-        .catch((error)=>{console.log(error)});
+            .catch((error) => {
+              console.log(error)
+            });
       } else {
-        alert("Non sono stati compilati i campi minimi");
+        alert("Non sono stati compilati i campi minimi o sono predenti degli errori");
       }
+      this.loading = false;
 
     },
-    productsValid() {
+    checkRecipe() {
+      //methods that check if the recipe has name and description, otherwise it set the errors
+      let formValid = this.recipe.nome !== "" && this.recipe.descrizione !== "";
+      if (!formValid) {
+        this.validValues.nome = this.recipe.nome !== "";
+        this.validValues.descrizione = this.recipe.descrizione !== "";
+        return false
+      }
+      return true;
+    },
+    getProductsValid() {
+      //methods that return the valid products checking for fakes and wrong typed
+      let productValid = [];
+      let realProducts = [];
+      let wrong = false;
       if (this.products.length === 0) {
-        return false;
+        return [];
       }
       for (let product of this.products) {
-        if (product.nome === "" || product.quantita <= 0) {
-          return false;
+        if (Object.keys(product).length === 0) {
+          //fakes objects
+          productValid.push(true);
+        } else if (product.nome === "" || product.quantita <= 0) {
+          // products wrong typed
+          productValid.push(false);
+          wrong = true;
+        } else {
+          // real products well typed
+          productValid.push(true);
+          realProducts.push(product);
         }
+        //Object.keys(product).length === 0
       }
-      //all products have quantity and name
-      return true;
+      this.validValues.prodotti = productValid;
+      if(wrong){
+        return [];
+      }
+      return realProducts;
     },
     back() {
       if (confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {
@@ -191,6 +245,7 @@ div.buttons {
   margin: 20px 0 0;
 
 }
+
 div.image {
   width: 100%;
   margin-top: 20px;
