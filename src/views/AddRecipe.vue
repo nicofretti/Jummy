@@ -16,7 +16,7 @@
       </div>
       <div style="margin-top:20px">
         <p>Descrizione</p>
-        <textarea :style="!this.validValues.descrizione && 'background-color:#ecdada'" v-model="recipe.descrizione"/>
+        <textarea :style="!this.validValues.descrizione && 'background-color:#ff4d4d'" v-model="recipe.descrizione"/>
       </div>
       <div style="margin-top:20px">
         <p>Prodotti</p>

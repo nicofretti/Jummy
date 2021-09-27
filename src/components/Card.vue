@@ -22,11 +22,13 @@ export default {
   },
   methods:{
     addProducts(){
-      Cart.update(this.recipe.prodotti)
+      this.loading=true;
+      Cart.addProducts(this.recipe.prodotti)
           .then(()=>{
-            console.log("tutto ok");
+            console.log("Prodotti aggiunti!");
           })
           .catch((error)=>{console.log(error)})
+      this.loading=false;
     },
     viewRecipe(){
       localStorage.setItem('recipe',JSON.stringify(this.recipe));
@@ -46,6 +48,7 @@ div.card{
   justify-self:stretch;
   flex-direction: column;
   justify-items: flex-start;
+  max-width: 300px;
   background: $CONTAINER;
   border-radius: 8px;
   fill:$CONTAINER;

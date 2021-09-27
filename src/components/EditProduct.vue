@@ -4,7 +4,7 @@
            :class="this.editNome ? '': 'disabled'"
            :disabled="!this.editNome"
            :value="nome" @input="changeName"
-           :style="this.error&&'background:#ecdada;'"
+           :style="this.error&&'background:#ff4d4d;'"
            type="text"/>
     <div>
       <button class="primary" @click="decrease">

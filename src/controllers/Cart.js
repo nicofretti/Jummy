@@ -17,4 +17,24 @@ export default class Cart {
         await updateDoc(doc(db, `users/`,logged.uid), {cart:cart});
     }
 
+    static async addProducts(newProducts){
+        let cart = await this.get();
+        let newCart = {}
+        cart.forEach((prod)=>{
+            newCart[prod.nome]=prod.quantita;
+        })
+        newProducts.forEach((prod)=>{
+            if(Object.keys(newCart).includes(prod.nome)){
+                newCart[prod.nome]+=prod.quantita
+            }else{
+                newCart[prod.nome]=prod.quantita
+            }
+        });
+        let updateCart = [];
+        for (const [key, value] of Object.entries(newCart)){
+            updateCart.push({nome:key,quantita:value});
+        }
+        await this.update(updateCart);
+    }
+
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="field">
     <p v-if="label">{{ label }}</p>
-    <input :style="!this.error ? styleInput:'background:#ecdada'" :value="modelValue" :type="type"
+    <input :style="!this.error ? styleInput:'background:#ff4d4d'" :value="modelValue" :type="type"
       @input="$emit('update:modelValue',$event.target.value)"/>
   </div>
 </template>
