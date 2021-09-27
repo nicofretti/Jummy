@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navbar active="true"/>
+    <Loader :active="loading" message="Stiamo preparando il carrello..."/>
     <div class="cart">
       <p class="action">Il tuo carrello!</p>
       <div id="asd" class="products">
@@ -24,33 +25,39 @@
 import EditProduct from "../components/EditProduct"
 import Navbar from "../components/Navbar";
 import Cart from "../controllers/Cart"
+import Loader from "../components/Loader"
 
 export default {
   name: 'Cart',
   props: [],
   components: {
     Navbar,
-    EditProduct
+    EditProduct,
+    Loader
   },
   data: () => {
     return {
+      loading: true,
       cart: []
     }
   },
   created() {
+    this.loading=true;
     Cart.get().then((cart) => {
       this.cart = cart;
     }).catch((error) => {
       console.log(error);
     });
+    this.loading=false;
   },
   methods: {
     print(){
       window.print();
     },
     changeProduct(idx, obj) {
+      this.loading=true;
       //make a copy to trigger Vue
-      let copy = this.products.slice();
+      let copy = this.cart.slice();
 
       if (obj.quantita === 0) {
         //remove element from array
@@ -59,7 +66,9 @@ export default {
         copy[idx] = obj;
       }
       //trigger of Vue
-      this.products = copy;
+      this.cart = copy;
+      Cart.update(this.cart);
+      this.loading=false;
 
     },
     emptyCart(){

@@ -59,7 +59,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const publics = ['/login', '/register'].includes(to.path);
     const logged = await firebase.getCurrentUser();
-    console.log(logged);
     if (logged) {
         if(publics){
             //publics pages aren't useful for logged users

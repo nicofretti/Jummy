@@ -1,9 +1,10 @@
 <template>
   <div>
     <Navbar :active="activeNav"/>
+    <Loader :active="loading" message="Stiamo caricando la nuova ricetta..."/>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
+      <LabelInput :error="this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta" type="text"
                   styleInput="background:white"/>
       <div style="margin-top:20px">
         <p>Immagine</p>
@@ -14,7 +15,7 @@
       </div>
       <div style="margin-top:20px">
         <p>Descrizione</p>
-        <textarea v-model="recipe.descrizione"/>
+        <textarea :style="!this.validValues.descrizione && 'background-color:#ecdada'" v-model="recipe.descrizione"/>
       </div>
       <div style="margin-top:20px">
         <p>Prodotti</p>
@@ -23,6 +24,8 @@
                        :key="idx" :idx="idx"
                        :nome="product.nome"
                        :quantita="product.quantita"
+                       editNome="true"
+                       :error="this.validValues.prodotti[idx]"
                        v-on:edit="changeProduct"/>
           <button class="secondary" @click="addProduct">
             Aggiungi prodotto
@@ -44,6 +47,7 @@ import Navbar from "../components/Navbar";
 import LabelInput from "../components/LabelInput"
 import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
+import Loader from "../components/Loader"
 
 export default {
   name: 'AddReciple',
@@ -52,24 +56,32 @@ export default {
     Navbar,
     LabelInput,
     EditProduct,
+    Loader
   },
   data: () => {
     return {
       activeNav: false,
+      loading:false,
       recipe: {
         nome: "",
         descrizione: "",
         immagine: "",
       },
-      products: [{nome: "", quantita: 1}]
+      products: [{nome: "", quantita: 1}],
+      validValues:{
+        nome:true,
+        descrizione:true,
+        prodotti:[true],
+      }
     }
   },
   methods: {
     changeProduct(idx, obj) {
+      console.log(idx);
       //make a copy to trigger Vue
       let copy = this.products.slice();
 
-      if (obj.quantita === 0) {
+      if (obj.quantita == 0 || obj.quantita<0) {
         //remove element from array
         copy.splice(idx, 1);
       } else {
@@ -81,6 +93,7 @@ export default {
     },
     addProduct() {
       this.products.push({nome: "", quantita: 1});
+      this.validValues.prodotti.push(true); //to disable errors on add
     },
     fileEdit(e) {
       if(e.target.files.length!==0){
@@ -93,7 +106,8 @@ export default {
       }
     },
     addRecipe() {
-      if (this.recipe.name !== "" && this.recipe.descrizione !== "" && this.productsValid()) {
+      this.loading=true;
+      if (this.checkForm()) {
         Recipes.create({
           ...this.recipe,
           prodotti: this.products
@@ -105,19 +119,35 @@ export default {
       } else {
         alert("Non sono stati compilati i campi minimi");
       }
+      this.loading=false;
 
+    },
+    checkForm(){
+      let formValid = this.recipe.nome !== "" && this.recipe.descrizione !== ""
+      if(!this.productsValid() || !formValid){
+        this.validValues.nome = this.recipe.nome !== "";
+        this.validValues.descrizione = this.recipe.descrizione !== "";
+        return false
+      }
+      return true;
     },
     productsValid() {
       if (this.products.length === 0) {
         return false;
       }
+      let productValid = [];
+      let valid = true;
       for (let product of this.products) {
         if (product.nome === "" || product.quantita <= 0) {
-          return false;
+          productValid.push(false);
+          valid=false;
+        }else{
+          productValid.push(true);
         }
       }
+      this.validValues.prodotti = productValid;
       //all products have quantity and name
-      return true;
+      return valid;
     },
     back() {
       if (confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {

@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navbar active="true"/>
+    <Loader :active="loading" message="Stiamo preparando le ricette..."/>
     <div class="body">
       <div class="bar">
         <div class="search">
@@ -10,14 +11,14 @@
           </button>
         </div>
         <button class="primary"
-                @click="newReciple"
+                @click="newRecipe"
                 style="margin-left:20px;border-radius: 8px;padding:8px;padding:0 10px 0">
           <AddCircleOutline style="fill:white;margin:0;" w="30" h="30"/>
           Nuova ricetta
         </button>
       </div>
       <div class="reciples">
-        <Card v-for="(rec,idx) in this.recipes" :recipe="rec" :key="idx"/>
+        <Card v-for="(rec,idx) in resultQuery" :recipe="rec" :key="idx"/>
       </div>
     </div>
   </div>
@@ -29,6 +30,7 @@ import Card from "../components/Card";
 import AddCircleOutline from 'vue-ionicons/dist/md-add-circle-outline';
 import Search from 'vue-ionicons/dist/md-search';
 import Recipes from "../controllers/Recipes"
+import Loader from "../components/Loader";
 
 export default {
   name: 'Home',
@@ -37,16 +39,19 @@ export default {
     Navbar,
     AddCircleOutline,
     Search,
-    Card
+    Card,
+    Loader
   },
   data: () => {
     return {
       recipes: [],
       search:"",
+      loading:true,
     }
   },
   methods: {
     newRecipe() {
+      console.log("CIAO")
       this.$router.push("/add_recipe")
     },
     searchObjects() {
@@ -55,11 +60,20 @@ export default {
   },
   async created() {
     this.recipes = await Recipes.all();
+    this.loading=false;
   },
   computed: {
     resultQuery: function(){
-      //get all reciples
-      //filter them by id
+      if(this.search===""){
+        return this.recipes;
+      }
+      let query = [];
+      this.recipes.forEach((recipe)=>{
+        if(recipe.nome.includes(this.search)){
+          query.push(recipe);
+        }
+      })
+      return query;
     }
   },
 }

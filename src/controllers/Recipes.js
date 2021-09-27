@@ -58,4 +58,20 @@ export default class Recipes {
         console.log(id);
         await deleteDoc(doc(db, `users/${logged.uid}/recipes`, id));
     }
+
+    // finally not used
+    // static async filterByName(name){
+    //     const db = getFirestore();
+    //     const logged = await firebase.getCurrentUser();
+    //     const querySnapshot = await getDocs(collection(db, `users/${logged.uid}/recipes`));
+    //     let query = [];
+    //     //searching in result the name
+    //     querySnapshot.forEach((doc) => {
+    //         let obj = doc.data();
+    //         if(obj.nome.includes(name)){
+    //             query.push({...obj,id:doc.id});
+    //         }
+    //     });
+    //     return query;
+    // }
 }

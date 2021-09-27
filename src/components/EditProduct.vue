@@ -1,6 +1,11 @@
 <template>
   <div class="product">
-    <input :class="this.editNome ? '': 'disabled'" :disabled="!this.editNome" placeholder="Nome prodotto..." :value="nome" @input="changeName" type="text"/>
+    <input placeholder="Nome prodotto..."
+           :class="this.editNome ? '': 'disabled'"
+           :disabled="!this.editNome"
+           :value="nome" @input="changeName"
+           :style="!this.error&&'background:#ecdada;'"
+           type="text"/>
     <div>
       <button class="primary" @click="decrease">
         <RemoveCircleOutline w="35" h="35"/>
@@ -21,16 +26,17 @@ import RemoveCircleOutline from 'vue-ionicons/dist/md-remove-circle-outline';
 export default {
   name: "EditProduct",
   props: ["idx",
-          "nome",
-          "quantita",
-          "editNome" //enables to edit product name
+    "nome",
+    "quantita",
+    "error", //true if product has errors
+    "editNome" //enables to edit product name
   ],
-  emit:["edit"],
-  data(){
+  emit: ["edit"],
+  data() {
     return {
-      product:{
-        nome:this.nome,
-        quantita:this.quantita,
+      product: {
+        nome: this.nome,
+        quantita: this.quantita,
       }
     }
   },
@@ -38,22 +44,22 @@ export default {
     AddCircleOutline,
     RemoveCircleOutline
   },
-  methods:{
-    changeName(e){
-      if(e.target.value!==undefined && e.target.value){
+  methods: {
+    changeName(e) {
+      if (e.target.value !== undefined && e.target.value) {
         //to catch the effective editing
         this.product.nome = e.target.value;
-        this.$emit('edit',this.idx, this.product)
+        this.$emit('edit', this.idx, this.product)
       }
 
     },
-    add(){
+    add() {
       this.product.quantita++;
-      this.$emit('edit',this.idx,this.product)
+      this.$emit('edit', this.idx, this.product)
     },
-    decrease(){
+    decrease() {
       this.product.quantita--;
-      this.$emit('edit',this.idx,this.product)
+      this.$emit('edit', this.idx, this.product)
     }
   }
 }
@@ -66,7 +72,6 @@ div.product {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  fill: black;
 
   input {
     flex-grow: 2;
@@ -94,9 +99,10 @@ div.product {
     border: none;
     border-radius: 100px;
     padding: 0;
-    margin:0;
+    margin: 0;
     text-align: center;
   }
+
   //text number
   p {
     text-align: center;
@@ -104,9 +110,10 @@ div.product {
     margin: 5px 2px 0;
     border-radius: 8px;
   }
-  input.disabled{
+
+  input.disabled {
     background: transparent;
-    border:none;
+    border: none;
   }
 }
 

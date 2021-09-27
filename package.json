@@ -12,7 +12,10 @@
     "firebase": "^9.0.2",
     "vue": "^3.0.0",
     "vue-ionicons": "^3.0.5",
-    "vue-router": "^4.0.0-0"
+    "vue-loading-overlay": "^4.0",
+    "vue-router": "^4.0.0-0",
+    "vue-spinner": "^1.0.4",
+    "vue3-loading-overlay": "^0.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
