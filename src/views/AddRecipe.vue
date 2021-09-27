@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar :active="activeNav"/>
-    <Loader :active="loading" message="Stiamo caricando la nuova ricetta..."/>
+    <Loader :active="this.loading" message="Stiamo caricando la nuova ricetta..."/>
     <div class="previous">
       <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
     </div>
@@ -128,11 +128,14 @@ export default {
           this.$router.push("/");
         }).catch((error) => {
           console.log(error);
+        }).finally(()=>{
+          this.loading = false;
         });
       } else {
         alert("Non sono stati compilati i campi minimi o sono presenti degli errori");
+        this.loading = false;
       }
-      this.loading = false;
+
 
     }
     ,

@@ -1,8 +1,9 @@
 <template>
-  <div class="container" v-if="active">
+  <div class="container" :style="this.active?'':'display:none'">
     <div class="popup">
+      <BounceLoader color="#CA3976" />
       <p v-if="message" class="message">{{message}}</p>
-      <BounceLoader color="#FFFFFF" />
+
     </div>
   </div>
 </template>
@@ -27,22 +28,24 @@ export default {
 @import "src/global";
 
 div.container{
-  position: absolute;
+  position: fixed;
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background: rgb(1,1,1,0.3);
+  background: rgb(1,1,1,0.7);
 }
 div.popup{
   position: absolute;
+  background: #f1e9e9;
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 200px;
-  color:$CONTAINER;
+  width: 600px;
+  max-height: 200px;
+  padding:50px 10px 50px;
+  color:$PRIMARY;
   border-radius:8px;
   display: flex;
   flex-direction: column;
@@ -50,7 +53,9 @@ div.popup{
   align-items: center;
   fill:$TEXT;
   *{
-    color:$CONTAINER;
+
+    margin:0px;
+    color: $PRIMARY;
   }
 }
 

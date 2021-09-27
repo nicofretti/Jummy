@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <Loader :active="loading" message="Stiamo aggiungendo gli articoli al carrello..."/>
+    <Loader :active="loading" message="Aggiungiamo i prodotti al carrello..."/>
     <div class="image" v-bind:style="{background: 'url('+(this.recipe.immagine)+')'}"/>
     <p>{{this.recipe.nome}}</p>
     <div class="actions">
@@ -14,6 +14,8 @@
 import Basket from 'vue-ionicons/dist/ios-basket';
 import Document from 'vue-ionicons/dist/ios-document';
 import Cart from "../controllers/Cart"
+import Loader from '../components/Loader';
+
 export default {
   name: "Card",
   props: ["id", "recipe"],
@@ -24,17 +26,18 @@ export default {
   },
   components:{
     Document,
-    Basket
+    Basket,
+    Loader
   },
   methods:{
     addProducts(){
-      this.loading=true;
+      this.loading=true
       Cart.addProducts(this.recipe.prodotti)
-          .then(()=>{
-            console.log("Prodotti aggiunti!");
-          })
+          .then(()=>{})
           .catch((error)=>{console.log(error)})
-      this.loading=false;
+          .finally(()=>{this.loading=false});
+
+
     },
     viewRecipe(){
       localStorage.setItem('recipe',JSON.stringify(this.recipe));
@@ -54,6 +57,7 @@ div.card{
   justify-self:stretch;
   flex-direction: column;
   justify-items: flex-start;
+  min-width: 100px !important;
   max-width: 300px;
   background: $CONTAINER;
   border-radius: 8px;

@@ -7,7 +7,7 @@
       <div class="bar">
         <div class="search">
           <input v-model="search" placeholder="Ricerca ricetta..." type="text"/>
-          <button @click="searchObjects" class="primary" style="margin:0;padding:0 15px 0;border-radius: 0 8px 8px 0">
+          <button class="primary" style="margin:0;padding:0 15px 0;border-radius: 0 8px 8px 0">
             <Search style="fill:white;" h="55" w="55"/>
           </button>
         </div>
@@ -55,9 +55,6 @@ export default {
       console.log("CIAO")
       this.$router.push("/add_recipe")
     },
-    searchObjects() {
-      console.log("query maked", this.search)
-    }
   },
   async created() {
     this.recipes = await Recipes.all();

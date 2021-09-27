@@ -3,7 +3,9 @@
     <Navbar :active="activeNav"/>
     <Loader :active="loading" message="Stiamo modificando la ricetta..."/>
     <div class="previous">
-      <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
+      <button @click="this.$router.go(-1)">
+        <ArrowBack w="50" h="50"/>
+      </button>
     </div>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
@@ -55,6 +57,7 @@ import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
 import Loader from "../components/Loader"
 import ArrowBack from "vue-ionicons/dist/md-arrow-back"
+
 export default {
   name: 'EditRecipe',
   props: [],
@@ -70,7 +73,7 @@ export default {
       activeNav: false,
       recipe: {},
       products: [],
-      loading:false,
+      loading: false,
       validValues: {
         nome: true,
         descrizione: true,
@@ -128,17 +131,19 @@ export default {
       this.loading = true;
       let products = this.getProductsValid();
       if (this.checkRecipe() && products.length > 0) {
-        Recipes.update({...this.recipe, prodotti: products}).then((newRecipe) => {
-          localStorage.setItem('recipe', JSON.stringify(newRecipe));
-          this.$router.go(-1);
-        })
+        Recipes.update({...this.recipe, prodotti: products})
+            .then((newRecipe) => {
+              localStorage.setItem('recipe', JSON.stringify(newRecipe));
+              this.$router.go(-1);
+            })
             .catch((error) => {
               console.log(error)
-            });
+            }).finally(()=>{this.loading=false});
       } else {
         alert("Non sono stati compilati i campi minimi o sono predenti degli errori");
+        this.loading = false;
       }
-      this.loading = false;
+
 
     },
     checkRecipe() {
@@ -175,14 +180,14 @@ export default {
         //Object.keys(product).length === 0
       }
       this.validValues.prodotti = productValid;
-      if(wrong){
+      if (wrong) {
         return [];
       }
       return realProducts;
     },
     back() {
       if (confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {
-        this.$router.pop();
+        this.$router.go(-1);
       }
     }
   }
