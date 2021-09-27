@@ -57,6 +57,7 @@ div.navbar {
   align-items: center;
   background: $CONTAINER;
   border-radius: 8px;
+  min-width: 900px;
   height: 80px;
   padding: 0 10px 0;
 

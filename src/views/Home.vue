@@ -1,18 +1,18 @@
 <template>
   <div>
-    <Navbar active="true" />
+    <Navbar active="true"/>
     <div class="body">
       <div class="bar">
         <div class="search">
           <input v-model="search" placeholder="Ricerca ricetta..." type="text"/>
-          <button class="primary" style="margin:0">
+          <button @click="searchObjects" class="primary" style="margin:0;padding:0 15px 0;border-radius: 0 8px 8px 0">
             <Search style="fill:white;" h="55" w="55"/>
           </button>
         </div>
         <button class="primary"
                 @click="newReciple"
-                style="margin-left:20px">
-          <AddCircleOutline style="fill:white" w="30" h="30"/>
+                style="margin-left:20px;border-radius: 8px;padding:8px;padding:0 10px 0">
+          <AddCircleOutline style="fill:white;margin:0;" w="30" h="30"/>
           Nuova ricetta
         </button>
       </div>
@@ -29,6 +29,7 @@ import Card from "../components/Card";
 import AddCircleOutline from 'vue-ionicons/dist/md-add-circle-outline';
 import Search from 'vue-ionicons/dist/md-search';
 import Recipes from "../controllers/Recipes"
+
 export default {
   name: 'Home',
   props: [],
@@ -40,24 +41,25 @@ export default {
   },
   data: () => {
     return {
+      recipes: [],
       search:"",
-      recipes:[],
     }
   },
   methods: {
-    newReciple(){
+    newRecipe() {
       this.$router.push("/add_recipe")
+    },
+    searchObjects() {
+      console.log("query maked", this.search)
     }
   },
-  async created(){
+  async created() {
     this.recipes = await Recipes.all();
   },
-  computed:{
-    searchReciples(){
-      if(this.search){
-        console.log("SEARCHING");
-      }
-      return this.search;
+  computed: {
+    resultQuery: function(){
+      //get all reciples
+      //filter them by id
     }
   },
 }
@@ -66,49 +68,54 @@ export default {
 <style scoped lang="scss">
 @import "src/global";
 
-div.body{
-  margin:40px 200px 20px;
+div.body {
+  margin: 40px 200px 20px;
 }
-div.bar{
-  display:flex;
+
+div.bar {
+  display: flex;
   justify-content: center;
-  align-items:center;
-  button{
-    margin:0;
-    font-size:20px
+  align-items: center;
+
+  button {
+    margin: 0;
+    font-size: 20px
   }
 }
 
-div.search{
+div.search {
   display: flex;
-  flex:2; //to fit the remaining content
-  input{
+  flex: 2; //to fit the remaining content
+  input {
     font-size: 22px;
     font-family: Quicksand-Bold, sans-serif;
     color: $TEXT;
     background: $CONTAINER;
     height: 60px;
     border: none;
-    border-radius: 8px;
-    margin:0;
-    padding-left:20px;
-    width:100%;
-    &:focus{
-      outline:none;
+    border-radius: 8px 0 0 8px;
+    margin: 0;
+    padding-left: 20px;
+    width: 100%;
+
+    &:focus {
+      outline: none;
     }
-    &::placeholder{
+
+    &::placeholder {
       text-align: center;
     }
   }
-  button{
+
+  button {
     margin-left: -10px;
   }
 }
 
-div.reciples{
+div.reciples {
   padding: 40px 0 40px;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:50px
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px
 }
 </style>

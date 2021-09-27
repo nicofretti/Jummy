@@ -81,7 +81,7 @@ div.cart {
   margin: auto auto 20px;
   flex-direction: column;
   justify-content: center;
-  max-width: 700px;
+  width: 700px; //set to make printable the list
   font-size: 20px;
   padding: 0 210px 0;
   * {

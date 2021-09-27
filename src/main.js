@@ -23,6 +23,8 @@ firebase.getCurrentUser = () => {
         }, reject);
     })
 };
-createApp(App).use(router).mount('#app')
+let app = createApp(App);
+app.use(router);
+app.mount('#app');
 
 

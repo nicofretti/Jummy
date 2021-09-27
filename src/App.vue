@@ -26,6 +26,7 @@ body {
   background: $BACKGROUND;
   color: $TEXT;
   margin: 20px 40px 0;
+  min-width: 700px;
   display: flex;
   flex-direction: column;
   font-family: Quicksand-Bold, sans-serif;
