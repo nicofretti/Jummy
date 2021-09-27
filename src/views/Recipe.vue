@@ -1,5 +1,8 @@
 <template v-if="this.recipe.nome">
   <Navbar active="true"/>
+  <div class="previous">
+    <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
+  </div>
   <div class="recipe" v-if="this.recipe.nome">
     <div class="header">
       <p class="title">{{ this.recipe.nome }}</p>
@@ -30,14 +33,15 @@ import Navbar from "../components/Navbar";
 import Trash from 'vue-ionicons/dist/md-trash';
 import Create from 'vue-ionicons/dist/md-create';
 import Recipes from "../controllers/Recipes"
-
+import ArrowBack from "vue-ionicons/dist/md-arrow-back"
 export default {
   name: 'Recipe',
   params: [],
   components: {
     Navbar,
     Trash,
-    Create
+    Create,
+    ArrowBack
   },
   data: () => {
     return {

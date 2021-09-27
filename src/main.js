@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from "./router"
 import firebase from "firebase/compat/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import VueLoading from 'vue-loading-overlay';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAELj8EWL86q6YPPGyC-z5NYm99QhIYOmU",
@@ -26,6 +26,7 @@ firebase.getCurrentUser = () => {
 };
 let app = createApp(App);
 app.use(router);
+app.use(VueLoading);
 app.mount('#app');
 
 

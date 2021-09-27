@@ -2,6 +2,7 @@
   <div>
     <Navbar active="true"/>
     <Loader :active="loading" message="Stiamo preparando le ricette..."/>
+
     <div class="body">
       <div class="bar">
         <div class="search">
@@ -12,7 +13,7 @@
         </div>
         <button class="primary"
                 @click="newRecipe"
-                style="margin-left:20px;border-radius: 8px;padding:8px;padding:0 10px 0">
+                style="margin-left:20px;border-radius: 8px;padding:8px;padding:0 10px 0;box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);">
           <AddCircleOutline style="fill:white;margin:0;" w="30" h="30"/>
           Nuova ricetta
         </button>
@@ -100,6 +101,8 @@ div.bar {
 div.search {
   display: flex;
   flex: 2; //to fit the remaining content
+  border-radius: 8px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   input {
     font-size: 22px;
     font-family: Quicksand-Bold, sans-serif;
@@ -129,7 +132,7 @@ div.search {
 div.reciples {
   padding: 40px 0 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 50px
 }
 </style>

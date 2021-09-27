@@ -18,10 +18,11 @@ button.primary {
   border: none;
   padding: 10px;
   border-radius: 20px;
-  margin:auto;
+  margin: auto;
   cursor: pointer;
-  &:active{
-    opacity:0.7;
+
+  &:active {
+    opacity: 0.7;
   }
 }
 
@@ -32,11 +33,23 @@ button.secondary {
   font-family: Quicksand-Bold, sans-serif;
   text-align: center;
   border: none;
-  margin:auto;
-  padding:10px;
+  margin: auto;
+  padding: 10px;
   border-radius: 20px;
   cursor: pointer;
-  &:active{
-    opacity:0.7;
+
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+div.previous {
+  margin: 20px 0 -60px !important;
+  fill:$PRIMARY;
+  > button {
+    background: $CONTAINER;
+    border:none;
+    border-radius: 8px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   }
 }

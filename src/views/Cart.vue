@@ -2,7 +2,10 @@
   <div>
     <Navbar active="true"/>
     <Loader :active="loading" message="Stiamo preparando il carrello..."/>
-    <div class="cart">
+    <div class="previous">
+      <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
+    </div>
+    <div class="cart" v-if="cart.length!==0">
       <p class="action">Il tuo carrello!</p>
       <div id="asd" class="products">
         <EditProduct v-for="(product,idx) in cart"
@@ -17,7 +20,11 @@
         <button class="secondary" @click="emptyCart">Svuota il carrello</button>
         <button class="primary" style="margin-left:20px" @click="print">Stampa carrello</button>
       </div>
-
+    </div>
+    <div class="cart" v-else>
+      <p class="action">Carrello</p>
+      <p style="text-align: center; margin-top:20px">Il tuo carrello è attualmente vuoto,
+        vai a riempirlo nel <a href="/">menu ricette</a></p>
     </div>
   </div>
 </template>
@@ -27,6 +34,7 @@ import EditProduct from "../components/EditProduct"
 import Navbar from "../components/Navbar";
 import Cart from "../controllers/Cart"
 import Loader from "../components/Loader"
+import ArrowBack from 'vue-ionicons/dist/md-arrow-back';
 
 export default {
   name: 'Cart',
@@ -34,7 +42,8 @@ export default {
   components: {
     Navbar,
     EditProduct,
-    Loader
+    Loader,
+    ArrowBack
   },
   data: () => {
     return {
@@ -73,11 +82,13 @@ export default {
 
     },
     emptyCart(){
-      Cart.update([]).then((cart) => {
-        this.cart = cart;
+      this.loading = true;
+      Cart.update([]).then(() => {
+        this.cart = [];
       }).catch((error) => {
         console.log(error);
       });
+      this.loading = false;
     }
   }
 }
@@ -108,7 +119,7 @@ p.action {
   color: $PRIMARY;
   font-size: 40px;
   text-align: center;
-  margin: 20px 0 0;
+  margin: 0 ;
 }
 
 div.products {

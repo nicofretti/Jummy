@@ -2,6 +2,9 @@
   <div>
     <Navbar :active="activeNav"/>
     <Loader :active="loading" message="Stiamo caricando la nuova ricetta..."/>
+    <div class="previous">
+      <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
+    </div>
     <div class="form">
       <p class="action">Aggiungi una nuova ricetta!</p>
       <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta"
@@ -49,7 +52,7 @@ import LabelInput from "../components/LabelInput"
 import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
 import Loader from "../components/Loader"
-
+import ArrowBack from "vue-ionicons/dist/md-arrow-back"
 export default {
   name: 'AddReciple',
   props: [],
@@ -57,7 +60,8 @@ export default {
     Navbar,
     LabelInput,
     EditProduct,
-    Loader
+    Loader,
+    ArrowBack
   },
   data: () => {
     return {

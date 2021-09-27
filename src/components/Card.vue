@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <Loader :active="loading" message="Stiamo aggiungendo gli articoli al carrello..."/>
     <div class="image" v-bind:style="{background: 'url('+(this.recipe.immagine)+')'}"/>
     <p>{{this.recipe.nome}}</p>
     <div class="actions">
@@ -16,6 +17,11 @@ import Cart from "../controllers/Cart"
 export default {
   name: "Card",
   props: ["id", "recipe"],
+  data(){
+    return {
+      loading:false
+    }
+  },
   components:{
     Document,
     Basket
@@ -53,6 +59,7 @@ div.card{
   border-radius: 8px;
   fill:$CONTAINER;
   padding-bottom: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   p{
     //title of the card
     min-height: 50px;
