@@ -1,6 +1,14 @@
 <template>
-  <div class="red">
-    <p>404 page not found :(</p>
+  <div class="notfound">
+    <p>
+      <span>404</span>
+      <br/>
+      Page not found
+      <br/>
+      :(
+      <br/>
+      <span style="font-size: 50px"><a href="/">Safe zone</a></span>
+      </p>
   </div>
 </template>
 
@@ -13,7 +21,15 @@ export default {
 
 <style scoped lang="scss">
 @import "src/global";
-div.red{
-  background: red;
+div.notfound{
+  display: flex;
+  justify-content: center;
+  p{
+    font-size: 100px;
+    text-align: center;
+    span{
+      color:$PRIMARY;
+    }
+  }
 }
 </style>

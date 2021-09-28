@@ -6,6 +6,7 @@ import AddRecipe from "./../views/AddRecipe"
 import Recipe from "./../views/Recipe"
 import Cart from "./../views/Cart"
 import EditRecipe from "./../views/EditRecipe"
+import P404 from "./../views/P404"
 import firebase from "firebase/compat/app";
 
 const routes = [
@@ -44,11 +45,11 @@ const routes = [
         name: 'edit_recipe',
         component: EditRecipe,
     },
-    //{
-    //    path: "/:pathMatch(.*)*",
-    //    name: 'p404',
-    //    component: P404,
-    //},
+    {
+        path: "/:pathMatch(.*)*",
+        name: 'p404',
+        component: P404,
+    },
 ];
 
 const router = createRouter({

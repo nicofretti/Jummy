@@ -1,14 +1,16 @@
 <template>
   <div class="container" v-if="active">
     <div class="popup">
-      <p v-if="message" class="message">{{message}}</p>
-      <BounceLoader color="#FFFFFF" />
+      <MdBarcodeIcon w="50" h="50"/>
+      <p class="header">Errore con il server:</p>
+      <p class="message">{{message}}</p>
+      <button @click="$emit('close')">Chiudi</button>
     </div>
   </div>
 </template>
 
 <script>
-import BounceLoader from 'vue-spinner/src/BounceLoader.vue'
+import MdBarcodeIcon from 'vue-ionicons/dist/md-barcode.vue' ;
 
 export default {
   name: "Loader",
@@ -16,8 +18,9 @@ export default {
     "active",
     "message"
   ],
+  emit:['close'],
   components: {
-    BounceLoader
+    MdBarcodeIcon
   },
 }
 </script>
@@ -48,15 +51,35 @@ div.popup{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  fill:$TEXT;
+  fill:red;
+  padding:10px;
+  background:$CONTAINER;
   *{
+    color:$TEXT;
+  }
+  button{
+    font-family: Quicksand-Bold,sans-serif;
+    display: flex;
+    font-size:22px;
+    align-self: flex-end;
+    margin-right:20px;
+    border-radius: 8px;
+    border:none;
+    background-color:$PRIMARY;
     color:$CONTAINER;
+    &:active{
+      opacity: 0.7;
+    }
   }
 }
-
+p.header{
+  font-size:25px;
+  margin:0;
+}
 p.message{
-  font-size:30px;
-  margin: 10px 10px 0;
+  font-size:22px;
+  font-family: Quicksand,sans-serif;
+  margin: 10px 0 20px
 }
 
 

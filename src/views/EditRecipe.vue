@@ -2,6 +2,7 @@
   <div>
     <Navbar :active="activeNav"/>
     <Loader :active="loading" message="Stiamo modificando la ricetta..."/>
+    <ActionPopup :active="error" v-on:close="this.error=false" :message="errorMessage"/>
     <div class="previous">
       <button @click="this.$router.go(-1)">
         <ArrowBack w="50" h="50"/>
@@ -57,7 +58,7 @@ import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
 import Loader from "../components/Loader"
 import ArrowBack from "vue-ionicons/dist/md-arrow-back"
-
+import ActionPopup from "../components/ActionPopup"
 export default {
   name: 'EditRecipe',
   props: [],
@@ -66,7 +67,8 @@ export default {
     LabelInput,
     EditProduct,
     Loader,
-    ArrowBack
+    ArrowBack,
+    ActionPopup
   },
   data: () => {
     return {
@@ -74,6 +76,8 @@ export default {
       recipe: {},
       products: [],
       loading: false,
+      error:false,
+      errorMessage:"",
       validValues: {
         nome: true,
         descrizione: true,
@@ -137,7 +141,8 @@ export default {
               this.$router.go(-1);
             })
             .catch((error) => {
-              console.log(error)
+              this.error=true;
+              this.errorMessage = error.toString();
             }).finally(()=>{this.loading=false});
       } else {
         alert("Non sono stati compilati i campi minimi o sono predenti degli errori");
@@ -263,5 +268,7 @@ div.image {
   border-radius: 10px;
   background-position: center !important;
   background-size: cover !important;
+  background-color:$IMG !important;
+
 }
 </style>

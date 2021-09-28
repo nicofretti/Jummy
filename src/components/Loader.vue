@@ -2,8 +2,7 @@
   <div class="container" :style="this.active?'':'display:none'">
     <div class="popup">
       <BounceLoader color="#CA3976" />
-      <p v-if="message" class="message">{{message}}</p>
-
+      <p class="message">{{message}}</p>
     </div>
   </div>
 </template>

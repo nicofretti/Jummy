@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Loader :active="this.loading" message="Stai per entrare nel portale..."/>
     <p class="title">Jumm</p>
     <LabelInput v-model="email" label="Email" type="text"/>
     <LabelInput v-model="password" label="Password" type="password" style="margin-top:20px"/>
@@ -13,27 +14,33 @@
 <script>
 import LabelInput from "../components/LabelInput"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth";
+import Loader from "../components/Loader"
 
 export default {
   name: 'Login',
   data: () => {
     return {
-      email: "nico.fretti@gmail.com",
-      password: "asdasd"
+      loading:false,
+      error:false,
+      errorMessage:"",
+      email: "",
+      password: ""
     }
   },
   components: {
-    LabelInput
+    LabelInput,
+    Loader
   },
   methods: {
     login() {
+      this.loading=true;
       signInWithEmailAndPassword(getAuth(), this.email, this.password)
           .then(() => {
             this.$router.push("/");
           })
           .catch((errors) => {
-            alert(errors)
-          })
+            alert(errors);
+          }).finally(()=>{this.loading=false});
     }
   }
 }

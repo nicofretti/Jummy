@@ -2,6 +2,7 @@
   <div>
     <Navbar :active="activeNav"/>
     <Loader :active="this.loading" message="Stiamo caricando la nuova ricetta..."/>
+    <ActionPopup :active="error" v-on:close="this.error=false" :message="errorMessage"/>
     <div class="previous">
       <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
     </div>
@@ -53,6 +54,7 @@ import EditProduct from "../components/EditProduct"
 import Recipes from "../controllers/Recipes"
 import Loader from "../components/Loader"
 import ArrowBack from "vue-ionicons/dist/md-arrow-back"
+import ActionPopup from "../components/ActionPopup"
 export default {
   name: 'AddReciple',
   props: [],
@@ -61,15 +63,18 @@ export default {
     LabelInput,
     EditProduct,
     Loader,
-    ArrowBack
+    ArrowBack,
+    ActionPopup
   },
   data: () => {
     return {
       activeNav: false,
       loading: false,
+      error:false,
+      errorMessage:"",
       recipe: {
-        nome: "Spaghetti all'amatriciana",
-        descrizione: "I piatti regionali sono spesso motivo di disputa tra gli italiani, che si tratti di chef professionisti o cuochi amatoriali, e gli spaghetti all’Amatriciana non fanno eccezione! Bucatini o spaghetti, pancetta o guanciale, aglio o cipolla… questi i principali interrogativi che chiunque si appresti a cucinare per la prima volta questa ricetta si trova a dover affrontare. Si dice che questo famoso piatto nato ad Amatrice fosse il pasto principale dei pastori, ma originariamente era senza pomodoro e prendeva il nome di “gricia”; questo ingrediente fu aggiunto in seguito quando i pomodori vennero importati dalle Americhe e il condimento prese il nome di Amatriciana. E’ quindi normale che una ricetta così antica e popolare si sia trasformata nel tempo assumendo le numerose varianti di cui ancora si discute al giorno d’oggi. Quella che vi proponiamo qui è la nostra versione, preparata con ingredienti locali e di qualità. Perché pensiamo che in realtà la ricetta degli spaghetti all’Amatriciana non divida l’Italia, bensì la unisca nel nome della bontà di una pietanza dall’animo semplice e dal carattere deciso… proprio come chi l’ha creata!",
+        nome: "",
+        descrizione: "",
         immagine: "",
       },
       products: [{nome: "", quantita: 1}],
@@ -127,7 +132,8 @@ export default {
         }).then(() => {
           this.$router.push("/");
         }).catch((error) => {
-          console.log(error);
+          this.error=true;
+          this.errorMessage = error.toString();
         }).finally(()=>{
           this.loading = false;
         });

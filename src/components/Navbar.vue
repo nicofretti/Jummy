@@ -60,7 +60,7 @@ div.navbar {
   min-width: 900px;
   height: 80px;
   padding: 0 10px 0;
-
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   .buttons {
     display: flex;
     flex-direction: row;
@@ -77,6 +77,7 @@ div.navbar {
 
       &:hover {
         cursor: pointer;
+        opacity: 0.7;
       }
     }
   }

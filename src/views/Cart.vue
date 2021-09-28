@@ -2,6 +2,7 @@
   <div>
     <Navbar active="true"/>
     <Loader :active="loading" message="Stiamo preparando il carrello..."/>
+    <ActionPopup :active="error" v-on:close="this.error=false" :message="errorMessage"/>
     <div class="previous">
       <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
     </div>
@@ -35,6 +36,7 @@ import Navbar from "../components/Navbar";
 import Cart from "../controllers/Cart"
 import Loader from "../components/Loader"
 import ArrowBack from 'vue-ionicons/dist/md-arrow-back';
+import ActionPopup from "../components/ActionPopup"
 
 export default {
   name: 'Cart',
@@ -43,11 +45,14 @@ export default {
     Navbar,
     EditProduct,
     Loader,
-    ArrowBack
+    ArrowBack,
+    ActionPopup
   },
   data: () => {
     return {
       loading: true,
+      error:false,
+      errorMessage:"",
       cart: []
     }
   },
@@ -56,15 +61,17 @@ export default {
     Cart.get().then((cart) => {
       this.cart = cart;
     }).catch((error) => {
-      console.log(error);
+      this.error=true;
+      this.errorMessage = error.toString();
+    }).finally(()=>{
+      this.loading=false;
     });
-    this.loading=false;
   },
   methods: {
     print(){
       window.print();
     },
-    changeProduct(idx, obj) {
+    async changeProduct(idx, obj) {
       this.loading=true;
       //make a copy to trigger Vue
       let copy = this.cart.slice();
@@ -76,8 +83,8 @@ export default {
         copy[idx] = obj;
       }
       //trigger of Vue
+      await Cart.update(copy);
       this.cart = copy;
-      Cart.update(this.cart);
       this.loading=false;
 
     },
@@ -86,9 +93,11 @@ export default {
       Cart.update([]).then(() => {
         this.cart = [];
       }).catch((error) => {
-        console.log(error);
+        this.error=true;
+        this.errorMessage = error.toString();
+      }).finally(()=>{
+        this.loading=false;
       });
-      this.loading = false;
     }
   }
 }
@@ -96,6 +105,13 @@ export default {
 
 <style scoped lang="scss">
 @import "src/global";
+
+p.empty{
+  text-align: center;
+  font-size: 30px;
+  margin-top:50px;
+  opacity: 0.5;
+}
 
 div.cart {
   display: flex;

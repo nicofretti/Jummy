@@ -57,8 +57,7 @@ div.card{
   justify-self:stretch;
   flex-direction: column;
   justify-items: flex-start;
-  min-width: 100px !important;
-  max-width: 300px;
+  min-width: 150px !important;
   background: $CONTAINER;
   border-radius: 8px;
   fill:$CONTAINER;
@@ -81,6 +80,7 @@ div.image{
   border-radius: 8px 8px 0 0;
   background-position: center !important;
   background-size: cover !important;
+  background-color: $IMG !important;
 }
 div.actions{
   display: flex;

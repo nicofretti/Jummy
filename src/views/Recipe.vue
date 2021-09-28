@@ -1,15 +1,20 @@
 <template v-if="this.recipe.nome">
   <Navbar active="true"/>
+  <Loader :active="loading" message="Stiamo aggiungendo i prodotti..."/>
+  <ActionPopup :active="error" v-on:close="this.error=false" :message="errorMessage"/>
   <div class="previous">
     <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
   </div>
   <div class="recipe" v-if="this.recipe.nome">
     <div class="header">
       <p class="title">{{ this.recipe.nome }}</p>
-      <button @click="edit">
+      <button @click="basket">
+        <Basket w="40" h="40"/>
+      </button>
+      <button @click="edit" style="margin:0 15px 0">
         <Create w="40" h="40"/>
       </button>
-      <button @click="remove" style="margin-left: 15px">
+      <button @click="remove" >
         <Trash w="40" h="40"/>
       </button>
     </div>
@@ -32,8 +37,12 @@
 import Navbar from "../components/Navbar";
 import Trash from 'vue-ionicons/dist/md-trash';
 import Create from 'vue-ionicons/dist/md-create';
+import Basket from 'vue-ionicons/dist/ios-basket'
 import Recipes from "../controllers/Recipes"
+import Cart from "../controllers/Cart"
+import Loader from "../components/Loader"
 import ArrowBack from "vue-ionicons/dist/md-arrow-back"
+import ActionPopup from "../components/ActionPopup"
 export default {
   name: 'Recipe',
   params: [],
@@ -41,11 +50,17 @@ export default {
     Navbar,
     Trash,
     Create,
-    ArrowBack
+    ArrowBack,
+    Basket,
+    ActionPopup,
+    Loader
   },
   data: () => {
     return {
       recipe: {},
+      loading:false,
+      error:false,
+      errorMessage:"",
     }
   },
   created() {
@@ -63,12 +78,22 @@ export default {
           localStorage.getItem('recipe'); //clear localstorage
           this.$router.push("/");
         }).catch((error) => {
-          console.log(error);
+          this.error=true;
+          this.errorMessage = error.toString();
         });
       }
     },
     edit() {
       this.$router.push('edit_recipe');
+    },
+    async basket(){
+      this.loading = true;
+      Cart.addProducts(this.recipe.prodotti).then(()=>{}).catch((error)=>{
+        this.error = true;
+        this.errorMessage = error;
+      }).finally(()=>{
+        this.loading=false;
+      });
     }
   }
 }
@@ -122,6 +147,7 @@ div.image {
   border-radius: 10px;
   background-position: center !important;
   background-size: cover !important;
+  background-color:$IMG !important;
 }
 
 p.description {
