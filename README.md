@@ -1,5 +1,5 @@
 # Jummy
-Simple web page to manage recipes!
+Simple web app to manage our recipes!
 
 ## Project setup
 ```
