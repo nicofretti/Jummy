@@ -78,7 +78,7 @@ export default {
     remove() {
       if (confirm("Confermare la cancellazione della ricetta?")) {
         Recipes.delete(this.recipe.id).then(() => {
-          localStorage.getItem('recipe'); //clear localstorage
+          localStorage.removeItem('recipe'); //clear localstorage
           this.$router.push("/");
         }).catch((error) => {
           this.error = true;
