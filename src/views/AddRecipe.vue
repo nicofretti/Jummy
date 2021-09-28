@@ -3,45 +3,47 @@
     <Navbar :active="activeNav"/>
     <Loader :active="this.loading" message="Stiamo caricando la nuova ricetta..."/>
     <ActionPopup :active="error" v-on:close="this.error=false" :message="errorMessage"/>
-    <div class="previous">
-      <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
-    </div>
-    <div class="form">
-      <p class="action">Aggiungi una nuova ricetta!</p>
-      <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta"
-                  type="text"
-                  styleInput="background:white"/>
-      <div style="margin-top:20px">
-        <p>Immagine</p>
-        <div class="image"
-             v-bind:style="this.recipe.immagine !==''&&{background: 'url('+(this.recipe.immagine.url ? this.recipe.immagine.url:this.recipe.immagine)+')'}"
-        />
-        <input type="file" @change="fileEdit" accept="image/*"/>
+    <div class="min_page">
+      <div class="previous">
+        <button @click="this.$router.go(-1)"><ArrowBack w="50" h="50"/></button>
       </div>
-      <div style="margin-top:20px">
-        <p>Descrizione</p>
-        <textarea :style="!this.validValues.descrizione && 'background-color:#ff4d4d'" v-model="recipe.descrizione"/>
-      </div>
-      <div style="margin-top:20px">
-        <p>Prodotti</p>
-        <div class="products">
-          <EditProduct v-for="(product,idx) in this.products"
-                       :key="idx" :idx="idx"
-                       :nome="product.nome"
-                       :quantita="product.quantita"
-                       editNome="true"
-                       :error="!this.validValues.prodotti[idx]"
-                       v-on:edit="changeProduct"/>
-          <button class="secondary" @click="addProduct">
-            Aggiungi prodotto
+      <div class="form">
+        <p class="action">Aggiungi una nuova ricetta!</p>
+        <LabelInput :error="!this.validValues.nome" style="margin-top:20px" v-model="recipe.nome" label="Nome ricetta"
+                    type="text"
+                    styleInput="background:white"/>
+        <div style="margin-top:20px">
+          <p>Immagine</p>
+          <div class="image"
+               v-bind:style="this.recipe.immagine !==''&&{background: 'url('+(this.recipe.immagine.url ? this.recipe.immagine.url:this.recipe.immagine)+')'}"
+          />
+          <input type="file" @change="fileEdit" accept="image/*"/>
+        </div>
+        <div style="margin-top:20px">
+          <p>Descrizione</p>
+          <textarea :style="!this.validValues.descrizione && 'background-color:#ff4d4d'" v-model="recipe.descrizione"/>
+        </div>
+        <div style="margin-top:20px">
+          <p>Prodotti</p>
+          <div class="products">
+            <EditProduct v-for="(product,idx) in this.products"
+                         :key="idx" :idx="idx"
+                         :nome="product.nome"
+                         :quantita="product.quantita"
+                         editNome="true"
+                         :error="!this.validValues.prodotti[idx]"
+                         v-on:edit="changeProduct"/>
+            <button class="secondary" @click="addProduct">
+              Aggiungi prodotto
+            </button>
+          </div>
+        </div>
+        <div class="buttons">
+          <button @click="back" style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
+          <button @click="addRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">
+            Aggiungi ricetta!
           </button>
         </div>
-      </div>
-      <div class="buttons">
-        <button @click="back" style="padding:10px 60px 10px;border-radius: 20px" class="secondary">Annulla</button>
-        <button @click="addRecipe" style="padding:10px 30px 10px;border-radius:20px;margin-left:20px" class="primary">
-          Aggiungi ricetta!
-        </button>
       </div>
     </div>
   </div>
@@ -195,7 +197,9 @@ export default {
 
 <style scoped lang="scss">
 @import "src/global";
-
+div.min_page{
+  min-width: 1015px;
+}
 div.form {
   display: flex;
   margin: auto auto 20px;

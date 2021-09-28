@@ -93,7 +93,7 @@ export default {
 
 div.body {
   margin: 40px 200px 20px;
-  min-width: 500px;
+  min-width: 670px;
 }
 
 div.bar {
@@ -147,6 +147,6 @@ div.reciples {
   padding: 40px 0 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 50px
+  gap: 20px
 }
 </style>

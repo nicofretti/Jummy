@@ -3,7 +3,7 @@
     <Loader :active="this.loading" message="Stai per entrare nel portale..."/>
     <p class="title">Jumm</p>
     <LabelInput v-model="email" label="Email" type="text"/>
-    <LabelInput v-model="password" label="Password" type="password" style="margin-top:20px"/>
+    <LabelInput v-model="password" label="Password" type="password" style="margin-top:20px" v-on:keyup.enter="login()"/>
     <div class="buttons">
       <button style="margin-top:40px" class="primary" @click="this.login">Entra</button>
       <button style="margin-top:20px" class="secondary" @click="this.$router.push('register')">Registrati</button>
@@ -39,6 +39,7 @@ export default {
             this.$router.push("/");
           })
           .catch((errors) => {
+            this.loading=false;
             alert(errors);
           }).finally(()=>{this.loading=false});
     }

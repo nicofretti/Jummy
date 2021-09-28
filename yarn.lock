@@ -8919,11 +8919,6 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-loading-overlay@^4.0:
-  version "4.0.4"
-  resolved "https://registry.npmjs.org/vue-loading-overlay/-/vue-loading-overlay-4.0.4.tgz"
-  integrity sha512-ADIEUXLo+IEpK8hd2+iqhZtEV3m0WNh5FlGvAc6FWG0KJAEHGTGUFdugQgAtM6Y3iFZc/ovzMd7A9dN+7QC7hw==
-
 vue-router@^4.0.0-0:
   version "4.0.11"
   resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.0.11.tgz"
@@ -8948,11 +8943,6 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.nlark.com/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
-
-vue3-loading-overlay@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.npmjs.org/vue3-loading-overlay/-/vue3-loading-overlay-0.0.0.tgz"
-  integrity sha512-Ly/sOMF+YTPDlVSsL4D8dTasT9A/PW+JlhFaY+sabOJXpafedxD1ADZbpT89XaM2QavRzfmq4s0nhcbr5I7BRQ==
 
 vue@^3.0.0:
   version "3.2.13"

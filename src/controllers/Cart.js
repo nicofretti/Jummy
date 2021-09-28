@@ -1,4 +1,4 @@
-import {doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import {doc, getDoc, getFirestore, updateDoc} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 
 //class to manage cart of a user

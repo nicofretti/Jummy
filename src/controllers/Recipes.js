@@ -1,4 +1,4 @@
-import {addDoc, collection, doc, getDocs, getFirestore, setDoc,updateDoc, deleteDoc} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, getDocs, getFirestore, setDoc, updateDoc} from "firebase/firestore";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import firebase from "firebase/compat/app";
 
@@ -11,7 +11,7 @@ export default class Recipes {
         const querySnapshot = await getDocs(collection(db, `users/${logged.uid}/recipes`));
         let query = [];
         querySnapshot.forEach((doc) => {
-            query.push({...doc.data(),id:doc.id});
+            query.push({...doc.data(), id: doc.id});
         });
         return query;
     }
@@ -23,13 +23,13 @@ export default class Recipes {
         let objRecipe = await addDoc(collection(db, `users/${logged.uid}/recipes`), {...recipe, immagine: ""});
         //adding image file in storage
         if (recipe.immagine && recipe.immagine !== "") {
-            let url = await this.uploadImage(objRecipe.id,recipe.immagine);
+            let url = await this.uploadImage(objRecipe.id, recipe.immagine);
             await updateDoc(doc(db, `users/${logged.uid}/recipes/${objRecipe.id}/`), {immagine: url})
         }
 
     }
 
-    static async uploadImage(idRecipe,img){
+    static async uploadImage(idRecipe, img) {
         //upload img and returns the img urs associated to idRecipe
         const storage = getStorage()
         //uploading img to /images/{id}
@@ -42,13 +42,13 @@ export default class Recipes {
         const logged = await firebase.getCurrentUser();
         const id = recipe.id;
         //if image has been modified re-upload
-        if(recipe.immagine.url){
-            let url = await this.uploadImage(id,recipe.immagine);
-            recipe = {...recipe,immagine:url};
+        if (recipe.immagine.url) {
+            let url = await this.uploadImage(id, recipe.immagine);
+            recipe = {...recipe, immagine: url};
         }
         delete recipe.id; // remove field id from recipe
         await setDoc(doc(db, `users/${logged.uid}/recipes`, id), recipe);
-        return {...recipe, id:id};
+        return {...recipe, id: id};
 
     }
 

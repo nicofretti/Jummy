@@ -2,15 +2,16 @@
   <div class="field">
     <p v-if="label">{{ label }}</p>
     <input :style="!this.error ? styleInput:'background:#ff4d4d'" :value="modelValue" :type="type"
-      @input="$emit('update:modelValue',$event.target.value)"/>
+           @input="$emit('update:modelValue',$event.target.value)"/>
   </div>
 </template>
 
 <script>
 
+// Input with label used in all app
 export default {
   name: "LabelInput",
-  props: ["modelValue","label", "type","styleInput","error"],
+  props: ["modelValue", "label", "type", "styleInput", "error"],
 }
 </script>
 

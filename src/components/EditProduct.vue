@@ -23,6 +23,8 @@
 import AddCircleOutline from 'vue-ionicons/dist/md-add-circle-outline';
 import RemoveCircleOutline from 'vue-ionicons/dist/md-remove-circle-outline';
 
+// this component is used to manage the products in recipe,
+// also used in cart with editNome=False to block the edit of product name
 export default {
   name: "EditProduct",
   props: ["idx",
@@ -46,8 +48,8 @@ export default {
   },
   methods: {
     changeName(e) {
-      if(e.target.value===""){
-        this.product.nome="";
+      if (e.target.value === "") {
+        this.product.nome = "";
         this.$emit('edit', this.idx, this.product)
       }
       if (e.target.value !== undefined && e.target.value) {

@@ -16,7 +16,7 @@ import {getAuth, signOut} from "firebase/auth";
 export default {
   name: "Navbar",
   props: [
-      "active" //false to activate warning
+    "active" //false to activate warning on change page
   ],
   components: {
     CartIcon,
@@ -24,21 +24,20 @@ export default {
   },
   methods: {
     logout() {
-      //Todo confirm exit
-      if(confirm("Confermare di voler uscire?"))
-      signOut(getAuth())
-          .then(() => {
-            this.$router.push("/login");
-          })
-          .catch((error) => {
-            alert(error);
-          })
+      if (confirm("Confermare di voler uscire?"))
+        signOut(getAuth())
+            .then(() => {
+              this.$router.push("/login");
+            })
+            .catch((error) => {
+              alert(error);
+            })
     },
     redirect(path) {
       //if active is false user have to confirm to change page
-      if(!this.active && confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")){
+      if (!this.active && confirm("I dati inseriti andranno persi, vuoi cambiare pagina?")) {
         this.$router.push(path);
-      }else{
+      } else {
         this.$router.push(path);
       }
     }
@@ -57,10 +56,11 @@ div.navbar {
   align-items: center;
   background: $CONTAINER;
   border-radius: 8px;
-  min-width: 900px;
+  min-width: 1015px;
   height: 80px;
   padding: 0 10px 0;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
   .buttons {
     display: flex;
     flex-direction: row;
@@ -92,6 +92,7 @@ div.title {
   font-size: 50px;
   margin: 0;
   cursor: pointer;
+
   &:first-letter {
     color: $PRIMARY;
   }
